@@ -961,7 +961,7 @@ main:focus {
 
 /* ---------- Human control ---------- */
 .control {
-  padding-block: clamp(80px, 13vh, 170px) clamp(100px, 18vh, 220px);
+  padding-block: clamp(80px, 13vh, 170px) 36vh;
 }
 .control-statement {
   font-size: clamp(2.3rem, 1rem + 3.3vw, 4.6rem);
@@ -1103,5 +1103,10 @@ main:focus {
   }
   .feature-stack-offset {
     padding-top: 56px;
+  }
+}
+@media (max-width: 899px) {
+  .section.control {
+    padding-bottom: 36vh;
   }
 }
