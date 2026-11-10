@@ -39,7 +39,7 @@
   --pad-r: calc(var(--pad) + var(--sar));
   --nav-h: 68px;
 
-  --shadow-text: 0 1px 2px rgb(2 11 23 / 0.6), 0 0 22px rgb(2 11 23 / 0.55);
+  --shadow-text: 0 1px 2px rgb(2 11 23 / 0.75), 0 0 10px rgb(2 11 23 / 0.7), 0 0 26px rgb(2 11 23 / 0.5);
   color-scheme: dark;
 }
 @supports (height: 100lvh) {
@@ -55,6 +55,7 @@
     --pad: 20px;
     --pad-r: calc(var(--pad) + var(--rail) + var(--sar));
     --nav-h: 60px;
+    --shadow-text: 0 1px 2px rgb(2 11 23 / 0.8), 0 0 8px rgb(2 11 23 / 0.75), 0 0 22px rgb(2 11 23 / 0.55);
   }
   @supports (height: 100lvh) {
     :root {
@@ -371,7 +372,7 @@ main:focus {
   margin: 0 auto;
 }
 .hero-copy {
-  max-width: min(50rem, 56vw);
+  max-width: min(62rem, 56vw);
 }
 .hero-title {
   font-size: clamp(3.4rem, 1rem + 6vw, 7.75rem);
@@ -961,7 +962,7 @@ main:focus {
 
 /* ---------- Human control ---------- */
 .control {
-  padding-block: clamp(80px, 13vh, 170px) 36vh;
+  padding-block: clamp(80px, 13vh, 170px) 44vh;
 }
 .control-statement {
   font-size: clamp(2.3rem, 1rem + 3.3vw, 4.6rem);
@@ -1018,22 +1019,36 @@ main:focus {
 }
 
 /* ---------- Surface ---------- */
+/* Exactly one viewport tall; the CTA starts below where the anchor ends up.
+   On very short screens it may grow rather than overlap the footer. */
 .surface {
   position: relative;
-  height: 100vh;
-  height: var(--vh-l);
+  min-height: 100vh;
+  min-height: var(--vh-l);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding-top: 57vh;
+  padding-top: 57lvh;
+  padding-bottom: calc(20px + var(--sab));
 }
 .surface-cta {
-  position: absolute;
-  top: 57%;
-  left: 0;
-  right: 0;
+  position: relative;
+  isolation: isolate;
   padding-left: var(--pad-l);
   padding-right: var(--pad-r);
   text-align: center;
   display: grid;
   justify-items: center;
+}
+/* soft scrim so the CTA holds 4.5:1 over the brightest shallows */
+.surface-cta::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -12% 10% -8%;
+  background: radial-gradient(closest-side, rgb(2 11 23 / 0.38), rgb(2 11 23 / 0));
+  pointer-events: none;
 }
 .surface-cta .h2 {
   font-size: clamp(2.6rem, 1.2rem + 3.4vw, 5rem);
@@ -1047,10 +1062,8 @@ main:focus {
   justify-content: center;
 }
 .footer {
-  position: absolute;
-  left: var(--pad-l);
-  right: var(--pad-r);
-  bottom: calc(20px + var(--sab));
+  margin-top: auto;
+  padding: 24px var(--pad-r) 0 var(--pad-l);
   text-align: center;
   font-size: 0.875rem;
   color: var(--body);
@@ -1059,13 +1072,19 @@ main:focus {
   margin: 0;
 }
 @media (max-width: 899px) {
+  .surface {
+    padding-top: calc(40vh + 16px);
+    padding-top: calc(40lvh + 16px);
+  }
   .surface-cta {
-    top: 44%;
     text-align: left;
     justify-items: start;
   }
   .surface-actions {
     justify-content: flex-start;
+  }
+  .surface-cta::before {
+    inset: -10% -10% -6% -20%;
   }
   .footer {
     text-align: left;
@@ -1107,7 +1126,7 @@ main:focus {
 }
 @media (max-width: 899px) {
   .section.control {
-    padding-bottom: 36vh;
+    padding-bottom: 44vh;
   }
 }
 
@@ -1117,17 +1136,20 @@ main:focus {
 }
 @media (min-width: 1100px) {
   :root {
-    --pad-l: max(calc(var(--pad) + var(--sal)), calc(184px + var(--sal) - max(0px, (100vw - 1760px) / 2)));
+    --pad-l: max(calc(var(--pad) + var(--sal)), calc(198px + var(--sal) - max(0px, (100vw - 1760px) / 2)));
   }
   .gauge {
     position: fixed;
     z-index: 2;
-    left: calc(22px + var(--sal));
-    top: 50%;
-    transform: translateY(-46%);
-    height: min(52vh, 460px);
+    left: calc(14px + var(--sal));
+    bottom: calc(11vh + var(--sab));
+    height: min(44vh, 420px);
     display: flex;
     gap: 14px;
+    padding: 16px 16px 16px 12px;
+    border-radius: 14px;
+    background: rgb(3 16 30 / 0.62);
+    box-shadow: 0 0 0 1px rgb(188 213 223 / 0.08);
     pointer-events: none;
     font-size: 0.8125rem;
     line-height: 1.2;
@@ -1198,7 +1220,7 @@ main:focus {
     color: var(--body);
   }
   .gauge-calls li {
-    opacity: 0.62;
+    opacity: 0.72;
     transition:
       opacity 0.3s,
       color 0.3s;

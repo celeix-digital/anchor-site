@@ -90,7 +90,7 @@ void main() {
   // Caustic network
   vec2 cuv = sp * 4.0 + vec2(0.0, p * 2.5);
   float cs = caustics(cuv, uTime * 0.5);
-  float cAmt = mix(0.04, 0.16, shallow) * (0.2 + 0.8 * near) + uSurf * 0.06 * near;
+  float cAmt = mix(0.04, 0.14, shallow) * (0.2 + 0.8 * near) * (1.0 - 0.25 * uSurf);
   col += vec3(0.55, 0.86, 0.95) * cs * cAmt;
 
   // God rays from a source above the screen
@@ -121,7 +121,7 @@ void main() {
   // Glow just under the waterline
   if (water > -0.5) {
     float dw = max(uv.y - water, 0.0);
-    col += vec3(0.62, 0.88, 0.94) * exp(-dw * 10.0) * 0.32 * uSurf;
+    col += vec3(0.62, 0.88, 0.94) * exp(-dw * 10.0) * 0.22 * uSurf;
   }
 
   // Vignette
@@ -199,6 +199,7 @@ export class Water {
     canvas.addEventListener('webglcontextlost', (e) => {
       e.preventDefault()
       this.lost = true
+      canvas.style.visibility = 'hidden'
     })
   }
 

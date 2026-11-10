@@ -12,9 +12,16 @@ const sizes = [
   { name: 'desktop', width: 1440, height: 900, mobile: false },
   { name: 'mobile', width: 390, height: 844, mobile: true },
 ].filter((s) => !flags.only || flags.only.split(',').includes(s.name))
+if (flags.size) {
+  sizes.length = 0
+  for (const sz of flags.size.split(',')) {
+    const [w, h] = sz.split('x').map(Number)
+    sizes.push({ name: `${w}x${h}`, width: w, height: h, mobile: w < 900 })
+  }
+}
 
 mkdirSync(out, { recursive: true })
-const browser = await chromium.launch({ args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] })
+const browser = await chromium.launch({ args: flags.nowebgl ? ['--disable-webgl', '--disable-3d-apis'] : ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] })
 for (const s of sizes) {
   const ctx = await browser.newContext({
     viewport: { width: s.width, height: s.height },

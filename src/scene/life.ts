@@ -715,11 +715,18 @@ export class Life {
           ctx.arc(sp[i], sp[i + 1], s, 0, TAU)
         }
         ctx.fillStyle = rgba(120, 236, 255, deep * (pass ? 0.75 : 0.3) * (0.5 + l * 0.25))
-        ctx.shadowColor = 'rgba(120,236,255,0.9)'
-        ctx.shadowBlur = pass ? 6 : 0
         ctx.fill()
       }
-      ctx.shadowBlur = 0
+      // soft halo, drawn as one wide faint pass instead of shadowBlur
+      ctx.beginPath()
+      for (let i = 0; i < cfg.specks * 4; i += 4) {
+        if (Math.sin(t * 1.3 + sp[i + 3]) <= 0.2) continue
+        const s = sp[i + 2] * 3
+        ctx.moveTo(sp[i] + s, sp[i + 1])
+        ctx.arc(sp[i], sp[i + 1], s, 0, TAU)
+      }
+      ctx.fillStyle = rgba(120, 236, 255, deep * 0.12)
+      ctx.fill()
     }
   }
 

@@ -88,6 +88,9 @@ export class Engine {
   private ro: ResizeObserver
   private mql: MediaQueryList
   private fallbackBg = ''
+  private dirty = true
+  private renderedP = -1
+  private stats: { renderMs: number; q: number; fps: number } | null = null
 
   constructor(root: HTMLElement) {
     this.root = root
@@ -128,6 +131,11 @@ export class Engine {
     document.addEventListener('visibilitychange', this.onVisibility)
     this.mql.addEventListener('change', this.onMotionPref)
     document.fonts?.ready.then(() => this.measureScroll())
+
+    if (new URLSearchParams(location.search).has('debug')) {
+      this.stats = { renderMs: 0, q: 0, fps: 60 }
+      ;(window as unknown as { __scene: unknown }).__scene = this.stats
+    }
 
     this.resize()
     this.measureScroll()
@@ -170,6 +178,7 @@ export class Engine {
   }
   private onMotionPref = () => {
     this.ambient = !this.mql.matches
+    this.dirty = true
   }
   private onResize = () => {
     this.measureScroll()
@@ -220,6 +229,7 @@ export class Engine {
     this.life.resize(W, H, this.dpr, this.mobile)
     this.life.setQuality(Q.life)
     this.populated = false
+    this.dirty = true
     this.spriteKey = ''
     this.warmKey = ''
   }
@@ -243,15 +253,25 @@ export class Engine {
       this.p += (this.pTarget - this.p) * (1 - Math.exp(-dt / TAU_SMOOTH))
       if (Math.abs(this.pTarget - this.p) < 1e-5) this.p = this.pTarget
     }
+    // Under reduced motion nothing moves on its own, so skip frames until scroll changes.
+    if (!this.ambient && !this.dirty && this.p === this.renderedP) return
+    const t0 = this.stats ? performance.now() : 0
     this.render(dt)
+    this.renderedP = this.p
+    this.dirty = false
+    if (this.stats) {
+      this.stats.renderMs += (performance.now() - t0 - this.stats.renderMs) * 0.05
+      this.stats.q = this.q
+      this.stats.fps = Math.round(1000 / this.frameEMA)
+    }
   }
 
   private adapt(dt: number) {
     if (dt <= 0 || dt > 0.09) return // ignore stalls (tab switches, GC)
     this.frameEMA += (dt * 1000 - this.frameEMA) * 0.05
-    if (this.frameEMA > 24) this.slowFor += dt
+    if (this.frameEMA > 20) this.slowFor += dt
     else this.slowFor = Math.max(0, this.slowFor - dt * 0.5)
-    if (this.slowFor > 3 && this.q < QUALITY.length - 1) {
+    if (this.slowFor > 2.5 && this.q < QUALITY.length - 1) {
       this.q++
       this.slowFor = 0
       this.frameEMA = 16
@@ -338,7 +358,7 @@ export class Engine {
     this.ensureSprites(k, wl.active)
 
     /* ---- WebGL water ---- */
-    if (this.water) {
+    if (this.water && !this.water.lost) {
       this.water.render({
         time: t,
         p: this.p,
@@ -450,7 +470,9 @@ export class Engine {
     this.ringPrevY = ringY
     life.anchorBubbles(ldt, clamp(moving / (vh * 0.5)) * 45 * QUALITY[this.q].life, this.emitAnchorBubble)
     const sandSurfNow = this.sandY + offFront
-    if (this.heavePrev < 0.5 && heaveRaw >= 0.5) {
+    if (!this.ambient) {
+      // no sand puffs under reduced motion
+    } else if (this.heavePrev < 0.5 && heaveRaw >= 0.5) {
       life.puff(this.restPivotX + unit * 0.43, sandSurfNow, unit * 0.25, 22)
       life.puff(lerp(this.restPivotX, this.cx, heave), sandSurfNow, unit * 0.1, 8)
     } else if (this.heavePrev > 0.15 && heaveRaw <= 0.15) {
