@@ -3,10 +3,13 @@ import { buildSeabed, drawKelp, type Seabed } from './seabed'
 import { Waterline, buildSky, drawFoam, drawSky, drawSurfaceBand, type Sky } from './surface'
 import { clamp, easeOut, lerp, mixRGB, smooth } from './util'
 import { Water } from './water'
+import { Layer, Life } from './life'
 
 const TAU_SMOOTH = 0.15 // seconds; exponential smoothing of scroll progress
 const HEAVE = 0.22 // viewports of scroll to heave in
 const REST_TILT = (40 * Math.PI) / 180
+// Local anchor points (units) that shed bubbles: stock balls, crown, flukes, shank.
+const BUBBLE_POINTS = [-0.318, 0.15, 0.318, 0.15, 0, 0.95, -0.27, 0.56, 0.27, 0.56, 0, 0.5, 0, 0.3, -0.33, 0.68, 0.33, 0.68]
 
 type Quality = { gl: number; dpr: number; life: number }
 const QUALITY: Quality[] = [
@@ -16,7 +19,7 @@ const QUALITY: Quality[] = [
 ]
 
 /** Values other parts of the page may want each frame (e.g. the depth gauge). */
-export type FrameInfo = { p: number; depth: number }
+export type FrameInfo = { p: number; depth: number; call: number }
 export type FrameListener = (info: FrameInfo) => void
 
 export class Engine {
@@ -74,7 +77,14 @@ export class Engine {
   private chainStyle: ChainStyle
 
   private listeners = new Set<FrameListener>()
-  private info: FrameInfo = { p: 0, depth: 39 }
+  private info: FrameInfo = { p: 0, depth: 39, call: 0 }
+  private life = new Life()
+  private sPrev = 0
+  private heavePrev = 0
+  private ringPrevX = 0
+  private ringPrevY = 0
+  private populated = false
+  private emitRing = { x: 0, y: 0, rot: 0 }
   private ro: ResizeObserver
   private mql: MediaQueryList
   private fallbackBg = ''
@@ -207,6 +217,9 @@ export class Engine {
     const moundX = this.restPivotX + unit * 0.43
     this.seabed = buildSeabed(W, H, this.dpr, this.mobile, this.cx, moundX, unit)
     this.sky = buildSky(W, H, this.dpr, this.mobile, this.cx)
+    this.life.resize(W, H, this.dpr, this.mobile)
+    this.life.setQuality(Q.life)
+    this.populated = false
     this.spriteKey = ''
     this.warmKey = ''
   }
@@ -230,7 +243,7 @@ export class Engine {
       this.p += (this.pTarget - this.p) * (1 - Math.exp(-dt / TAU_SMOOTH))
       if (Math.abs(this.pTarget - this.p) < 1e-5) this.p = this.pTarget
     }
-    this.render()
+    this.render(dt)
   }
 
   private adapt(dt: number) {
@@ -246,11 +259,42 @@ export class Engine {
     }
   }
 
-  private render() {
+  private emitAnchorBubble = (out: Float32Array) => {
+    const i = Math.floor(Math.random() * BUBBLE_POINTS.length / 2) * 2
+    const e = this.emitRing
+    const lx = BUBBLE_POINTS[i] * this.unit
+    const ly = BUBBLE_POINTS[i + 1] * this.unit
+    const c = Math.cos(e.rot)
+    const sn = Math.sin(e.rot)
+    out[0] = e.x + lx * c - ly * sn
+    out[1] = e.y + lx * sn + ly * c
+    return out[1] > this.wl.at(out[0]) + 2
+  }
+
+  private emitDrip = (out: Float32Array) => {
+    const e = this.emitRing
+    const lx = (Math.random() - 0.5) * 0.6 * this.unit
+    const ly = (ANCHOR.stockY + 0.02) * this.unit
+    const c = Math.cos(e.rot)
+    const sn = Math.sin(e.rot)
+    out[0] = e.x + lx * c - ly * sn
+    out[1] = e.y + lx * sn + ly * c
+    return out[1] < this.wl.at(out[0]) - 3
+  }
+
+  private render(dt: number) {
     const { W, H, unit, ctx } = this
     const t = this.t
     const s = this.p * this.maxScroll
     const vh = this.vh
+    const ldt = this.ambient ? dt : 0
+    if (!this.populated) {
+      this.life.populate(this.p)
+      this.sPrev = s
+      this.populated = true
+    }
+    const dCam = s - this.sPrev
+    this.sPrev = s
 
     // Phases, all derived from the one smoothed progress value.
     const heaveRaw = clamp(s / (HEAVE * vh))
@@ -265,6 +309,8 @@ export class Engine {
     wl.t = t
     wl.active = surf > 0.001
     wl.y = lerp(-H * 0.06, this.waterFinal, smooth(surf) * 0.7 + easeOut(surf) * 0.3)
+
+    this.life.update({ t, dt: ldt, p: this.p, dCam, wl })
 
     // Anchor pose
     let ringX: number
@@ -310,6 +356,10 @@ export class Engine {
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
     ctx.clearRect(0, 0, W, H)
 
+    const life = this.life
+    life.drawParticles(ctx, Layer.Far, this.p, t)
+    life.drawCreatures(ctx, Layer.Far, this.p, t)
+
     // Seabed back layer and back kelp
     const sb = this.seabed
     const backY = this.sandY - sb.backGround + offBack
@@ -317,9 +367,20 @@ export class Engine {
       ctx.drawImage(sb.back, 0, backY, W, sb.backH)
       for (const kk of sb.kelpBack) drawKelp(ctx, kk, backY + sb.backGround, t, H)
     }
+    for (let v = 0; v < sb.vents.length; v++) life.vent(v, ldt, sb.vents[v].x, backY + sb.vents[v].y)
 
-    // Sky and port, clipped above the wave line
+    life.drawParticles(ctx, Layer.Mid, this.p, t)
+    life.drawCreatures(ctx, Layer.Mid, this.p, t)
+
+    // Sky and port, clipped above the wave line; gulls in the sky
     drawSky(ctx, this.sky, wl, H, t, this.ambient)
+    if (wl.active && wl.y > 0) {
+      ctx.save()
+      wl.traceAbove(ctx)
+      ctx.clip()
+      life.drawGulls(ctx, wl.y + H * 0.02 - this.sky.h + this.sky.horizon, t, this.ambient)
+      ctx.restore()
+    }
 
     // Chain and anchor
     const upX = Math.sin(rot)
@@ -380,6 +441,37 @@ export class Engine {
       for (const kk of sb.kelpFront) drawKelp(ctx, kk, sandSurf + 6, t, H)
     }
 
+    // Emitters: anchor bubbles, sand puffs, drips
+    this.emitRing.x = ringX
+    this.emitRing.y = ringY
+    this.emitRing.rot = rot
+    const moving = Math.abs(dCam) / Math.max(dt, 1e-3) + Math.hypot(ringX - this.ringPrevX, ringY - this.ringPrevY) / Math.max(dt, 1e-3)
+    this.ringPrevX = ringX
+    this.ringPrevY = ringY
+    life.anchorBubbles(ldt, clamp(moving / (vh * 0.5)) * 45 * QUALITY[this.q].life, this.emitAnchorBubble)
+    const sandSurfNow = this.sandY + offFront
+    if (this.heavePrev < 0.5 && heaveRaw >= 0.5) {
+      life.puff(this.restPivotX + unit * 0.43, sandSurfNow, unit * 0.25, 22)
+      life.puff(lerp(this.restPivotX, this.cx, heave), sandSurfNow, unit * 0.1, 8)
+    } else if (this.heavePrev > 0.15 && heaveRaw <= 0.15) {
+      life.puff(lerp(this.restPivotX, this.cx, heave) + unit * 0.2, sandSurfNow, unit * 0.35, 18)
+    }
+    this.heavePrev = heaveRaw
+    if (wl.active && surf > 0.45) life.drip(ldt, 2.2, this.emitDrip)
+
+    // Sand puffs, bubbles and near creatures, clipped below the wave line
+    if (wl.active) {
+      ctx.save()
+      wl.traceBelow(ctx, H)
+      ctx.clip()
+    }
+    life.drawPuffs(ctx)
+    life.drawBubbles(ctx)
+    life.drawParticles(ctx, Layer.Near, this.p, t)
+    life.drawCreatures(ctx, Layer.Near, this.p, t)
+    if (wl.active) ctx.restore()
+    life.drawSurfaceFx(ctx, wl)
+
     // Surface: foam where the shank pierces the water, then the highlight band.
     if (wl.active) {
       const along = (wl.y - ringY) / Math.max(1e-3, -upY)
@@ -393,7 +485,8 @@ export class Engine {
     // Notify listeners (depth gauge etc.)
     if (this.listeners.size) {
       this.info.p = this.p
-      this.info.depth = 39 * (1 - this.p)
+      this.info.depth = 39 * (1 - asc)
+      this.info.call = heaveRaw < 0.08 ? 0 : heaveRaw < 0.97 ? 1 : ascRaw < 0.05 ? 2 : surf < 0.45 ? 3 : surf < 0.93 ? 4 : 5
       for (const fn of this.listeners) fn(this.info)
     }
   }

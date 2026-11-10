@@ -266,7 +266,7 @@ main:focus {
   display: flex;
   align-items: center;
   gap: 24px;
-  padding-left: var(--pad-l);
+  padding-left: calc(var(--pad) + var(--sal));
   padding-right: calc(var(--pad) + var(--sar));
   max-width: 1760px;
   margin: 0 auto;
@@ -1108,5 +1108,159 @@ main:focus {
 @media (max-width: 899px) {
   .section.control {
     padding-bottom: 36vh;
+  }
+}
+
+/* ---------- Depth gauge (1100px and wider) ---------- */
+.gauge {
+  display: none;
+}
+@media (min-width: 1100px) {
+  :root {
+    --pad-l: max(calc(var(--pad) + var(--sal)), calc(184px + var(--sal) - max(0px, (100vw - 1760px) / 2)));
+  }
+  .gauge {
+    position: fixed;
+    z-index: 2;
+    left: calc(22px + var(--sal));
+    top: 50%;
+    transform: translateY(-46%);
+    height: min(52vh, 460px);
+    display: flex;
+    gap: 14px;
+    pointer-events: none;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    font-weight: 500;
+  }
+  .gauge-scale {
+    display: grid;
+    grid-template-rows: 1fr;
+    justify-items: start;
+    width: 36px;
+  }
+  .gauge-end {
+    color: var(--body);
+    font-variant-numeric: tabular-nums;
+  }
+  .gauge-track {
+    position: relative;
+    width: 16px;
+    border-left: 1px solid rgb(188 213 223 / 0.45);
+  }
+  .gauge-tick {
+    position: absolute;
+    left: 0;
+    width: 6px;
+    height: 1px;
+    background: rgb(188 213 223 / 0.45);
+  }
+  .gauge-tick.is-major {
+    width: 11px;
+    background: rgb(188 213 223 / 0.7);
+  }
+  .gauge-marker {
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 0;
+    height: 0;
+    will-change: transform;
+  }
+  .gauge-marker::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -5px;
+    border-style: solid;
+    border-width: 5px 0 5px 9px;
+    border-color: transparent transparent transparent var(--amber);
+    filter: drop-shadow(0 0 4px rgb(242 165 65 / 0.6));
+  }
+  .gauge-read {
+    position: absolute;
+    left: 15px;
+    top: -0.6em;
+    color: var(--amber);
+    font-weight: 600;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .gauge-calls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: -0.6em;
+    margin-bottom: -0.6em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--body);
+  }
+  .gauge-calls li {
+    opacity: 0.62;
+    transition:
+      opacity 0.3s,
+      color 0.3s;
+    white-space: nowrap;
+  }
+  .gauge-calls li.is-active {
+    opacity: 1;
+    color: var(--foam);
+    font-weight: 600;
+  }
+}
+
+/* ---------- Load moment: the only entrance animation ---------- */
+.scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  animation: scene-in 1.5s ease-out 0.1s forwards;
+  pointer-events: none;
+}
+@keyframes scene-in {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.hero-line,
+.hero-sub,
+.hero-actions,
+.hero-cue {
+  animation: rise-in 0.95s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.hero-line {
+  animation-delay: calc(0.25s + var(--i) * 0.16s);
+}
+.hero-sub {
+  animation-delay: 0.6s;
+}
+.hero-actions {
+  animation-delay: 0.75s;
+}
+.hero-cue {
+  animation-delay: 1.1s;
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene::after {
+    display: none;
+  }
+  .hero-line,
+  .hero-sub,
+  .hero-actions,
+  .hero-cue {
+    animation: none;
+  }
+  .gauge-calls li {
+    transition: none;
   }
 }
