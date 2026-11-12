@@ -29,7 +29,11 @@ export const hero = {
   sub: 'AI-native coordination for maritime operations, built around the port call and grounded in human control.',
   primary: 'Book a demo',
   secondary: 'See how it works',
-  cue: 'Scroll to weigh anchor',
+  image: {
+    src: '/hero-port.webp',
+    width: 3040,
+    height: 1200,
+  },
 }
 
 export const problem = {
@@ -70,11 +74,19 @@ export const how = {
   ],
 }
 
+// Screenshots are from the ANCHOR app running on synthetic QA data.
 export const live = {
   heading: 'Live today for shipping agents',
+  legend: { ai: 'What the AI does', team: 'What your team does' },
   classification: {
     title: 'Email classification',
     caption: 'Every message tagged to its vessel, its port and the stage of the call.',
+    image: {
+      src: '/product/classification.webp',
+      width: 804,
+      height: 128,
+      alt: 'An email thread in ANCHOR labelled Informational and tagged to MT Avalon Spirit and port call HT-26AUG002, with ETA, ETB, ETD and the current operation, discharging.',
+    },
     from: 'Surveyor’s office',
     subject: 'ETA 15:30 for draft survey on arrival',
     time: '08:05',
@@ -87,6 +99,12 @@ export const live = {
   drafts: {
     title: 'AI draft replies',
     caption: 'Drafts wait in the thread until someone on your team reviews and sends them.',
+    image: {
+      src: '/product/draft.webp',
+      width: 756,
+      height: 374,
+      alt: 'The ANCHOR reply composer with a Generate menu and a “Help me write” prompt, and Discard and Send buttons that stay with the user.',
+    },
     status: 'Needs your review',
     label: 'Draft reply',
     body: 'Good morning Captain, berth 7 is confirmed for 14:00 and the pilot boards at 13:15. Please confirm your ETA at the pilot station.',
@@ -96,6 +114,12 @@ export const live = {
   inbox: {
     title: 'Shared inbox',
     caption: 'The whole desk works from one inbox, with every thread tied to its port call.',
+    image: {
+      src: '/product/inbox.webp',
+      width: 1368,
+      height: 836,
+      alt: 'The ANCHOR shared inbox: folders for vessel, terminal and office mail, and a list of threads each tagged with its vessel, port-call reference and a status such as Action required, Informational or Replied.',
+    },
     header: 'Shared inbox',
     unread: '3 unread',
     threads: [
@@ -107,6 +131,12 @@ export const live = {
   tracking: {
     title: 'Vessel and port-call tracking',
     caption: 'Each vessel’s call from arrival to departure, in one view.',
+    image: {
+      src: '/product/alerts.webp',
+      width: 422,
+      height: 379,
+      alt: 'The Critical alerts panel on the ANCHOR dashboard, listing unanswered queries and notices of readiness for MV Baltic Sentinel and MT Avalon Spirit with how long each has waited.',
+    },
     vessel: 'MT Pacific Envoy',
     location: 'Berth 7',
     stages: [
@@ -136,10 +166,6 @@ export const surface = {
   heading: 'Anchor clear. Ready when you are.',
   line: 'ANCHOR39 is live today for shipping agents.',
   primary: 'Book a demo',
-  secondary: 'Back to the seabed',
   footer: '© 2026 ANCHOR39',
 }
 
-export const gauge = {
-  calls: ['Anchor holding', 'Heaving in', 'Up and down', 'Anchor aweigh', 'Anchor sighted', 'Anchor clear'],
-}
