@@ -261,9 +261,10 @@ img {
   margin-right: auto;
 }
 .brand-glyph {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   color: var(--navy);
+  flex: none;
 }
 .brand-word {
   font-family: var(--font-display);
@@ -321,8 +322,8 @@ img {
 
 /* ---------- Hero ---------- */
 .hero {
-  padding-top: clamp(48px, 8vw, 104px);
-  padding-bottom: clamp(56px, 8vw, 104px);
+  padding-top: clamp(64px, 10vw, 136px);
+  padding-bottom: clamp(64px, 9vw, 120px);
 }
 .hero-title {
   font-size: clamp(3.25rem, 1.8rem + 5.2vw, 6.75rem);
@@ -339,24 +340,6 @@ img {
 .hero .actions {
   margin-top: 32px;
 }
-.hero-figure {
-  margin: clamp(48px, 7vw, 80px) 0 0;
-  border-radius: calc(var(--radius) + 4px);
-  overflow: hidden;
-  background: var(--navy);
-  aspect-ratio: 3040 / 1200;
-}
-.hero-figure img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-@media (max-width: 699px) {
-  .hero-figure {
-    aspect-ratio: 4 / 3;
-  }
-}
-
 /* ---------- How it works ---------- */
 .lanes {
   margin-top: clamp(40px, 5vw, 64px);
@@ -696,28 +679,28 @@ img {
 }
 
 /* ---------- Anchor rail ----------
-   Lives in the right-hand margin so it never covers text. Below 1280px it
-   shrinks and the content gets a little matching right padding. */
+   Lives in the left-hand margin so it never covers text. Below 1280px it
+   shrinks and the content gets a little matching left padding. */
 :root {
-  --rail-w: 44px;
-  --rail-right: max(18px, calc((100vw - var(--wrap)) / 4 - 22px));
+  --rail-w: 58px;
+  --rail-left: max(16px, calc((100vw - var(--wrap)) / 4 - 29px));
   --rail-space: 0px;
 }
 @media (max-width: 1279px) {
   :root {
-    --rail-w: 22px;
-    --rail-right: calc(6px + var(--sar));
-    --rail-space: 22px;
+    --rail-w: 28px;
+    --rail-left: calc(6px + var(--sal));
+    --rail-space: 26px;
   }
   .wrap {
-    padding-right: calc(var(--pad) + var(--sar) + var(--rail-space));
+    padding-left: calc(var(--pad) + var(--sal) + var(--rail-space));
   }
 }
 .rail {
   position: fixed;
   z-index: 40;
   top: 0;
-  right: var(--rail-right);
+  left: var(--rail-left);
   width: var(--rail-w);
   height: 0;
   pointer-events: none;
@@ -738,11 +721,11 @@ img {
   position: absolute;
   left: 50%;
   bottom: calc(100% - 2px);
-  width: 14px;
+  width: 16px;
   height: 140vh;
   transform: translateX(-50%);
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='24' viewBox='0 0 14 24'%3E%3Crect x='3.2' y='0.9' width='7.6' height='13' rx='3.8' fill='none' stroke='%237b8b9a' stroke-width='2.1'/%3E%3Crect x='5.7' y='11.2' width='2.6' height='12.8' rx='1.3' fill='%23586b7e'/%3E%3C/svg%3E")
-    repeat-y bottom center / 14px 24px;
+    repeat-y bottom center / 16px 27.4px;
 }
 .rail-anchor {
   display: block;
@@ -753,8 +736,8 @@ img {
 }
 @media (max-width: 1279px) {
   .rail-chain {
-    width: 9px;
-    background-size: 9px 15.4px;
+    width: 10px;
+    background-size: 10px 17.1px;
   }
 }
 

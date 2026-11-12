@@ -29,11 +29,6 @@ export const hero = {
   sub: 'AI-native coordination for maritime operations, built around the port call and grounded in human control.',
   primary: 'Book a demo',
   secondary: 'See how it works',
-  image: {
-    src: '/hero-port.webp',
-    width: 3040,
-    height: 1200,
-  },
 }
 
 export const problem = {

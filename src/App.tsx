@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { DEMO_URL, control, hero, how, live, nav, problem, surface, type Side } from './content'
-import { AnchorGlyph } from './components/Logo'
+import { LogoMark } from './components/Logo'
 import AnchorRail from './components/AnchorRail'
 
 function Nav() {
@@ -25,7 +25,7 @@ function Nav() {
     <header ref={ref} className="nav">
       <div className="nav-inner">
         <a className="brand" href="#top" aria-label={nav.homeLabel}>
-          <AnchorGlyph className="brand-glyph" />
+          <LogoMark className="brand-glyph" />
           <span className="brand-word">ANCHOR39</span>
         </a>
         <nav className="nav-links" aria-label="Main">
@@ -92,9 +92,6 @@ function Hero() {
             {hero.secondary}
           </a>
         </div>
-        <figure className="hero-figure reveal reveal-zoom" style={d(440)}>
-          <img src={hero.image.src} width={hero.image.width} height={hero.image.height} alt="" fetchPriority="high" decoding="async" />
-        </figure>
       </div>
     </section>
   )
@@ -244,7 +241,7 @@ function Footer() {
     <footer className="footer">
       <div className="wrap footer-inner">
         <a className="brand" href="#top" aria-label={nav.homeLabel}>
-          <AnchorGlyph className="brand-glyph" />
+          <LogoMark className="brand-glyph" />
           <span className="brand-word">ANCHOR39</span>
         </a>
         <nav className="footer-links" aria-label="Footer">

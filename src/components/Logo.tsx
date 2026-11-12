@@ -1,11 +1,17 @@
-// Anchor glyph reused from the ANCHOR product (anchor-frontend/public/anchor.svg).
-export function AnchorGlyph({ className }: { className?: string }) {
+// ANCHOR39 mark: a compass ring with four ticks around a teal triangle and centre dot.
+// The ring uses currentColor so it can sit on light or dark backgrounds.
+export function LogoMark({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-      <path
-        fill="currentColor"
-        d="M32 4a6 6 0 0 0-3 11.2V20h-6a2 2 0 0 0 0 4h6v25.9c-9.4-1.4-16.7-8.6-18-18H15a2 2 0 0 0 1.4-3.4l-7-7a2 2 0 0 0-2.8 0l-7 7A2 2 0 0 0 1 32h4.1c1.4 14.2 13.4 25.4 28 25.9V58h-.2.4-.2v-.1c14.6-.5 26.6-11.7 28-25.9H63a2 2 0 0 0 1.4-3.4l-7-7a2 2 0 0 0-2.8 0l-7 7A2 2 0 0 0 49 32h4c-1.3 9.4-8.6 16.6-18 18V24h6a2 2 0 0 0 0-4h-6v-4.8A6 6 0 0 0 32 4Zm0 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"
-      />
+    <svg className={className} viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <circle cx="24" cy="24" r="17.2" fill="none" stroke="currentColor" strokeWidth="1.9"/>
+      <g fill="currentColor">
+        <rect x="22.8" y="1.4" width="2.4" height="5.2" rx="0.6"/>
+        <rect x="22.8" y="41.4" width="2.4" height="5.2" rx="0.6"/>
+        <rect x="1.4" y="22.8" width="5.2" height="2.4" rx="0.6"/>
+        <rect x="41.4" y="22.8" width="5.2" height="2.4" rx="0.6"/>
+      </g>
+      <path d="M24 10.2 L36.3 30.8 L11.7 30.8 Z" fill="none" stroke="#38b0b8" strokeWidth="2.1" strokeLinejoin="round"/>
+      <circle cx="24" cy="24" r="3.1" fill="#38b0b8"/>
     </svg>
   )
 }

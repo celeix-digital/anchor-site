@@ -26,3 +26,10 @@ What changed on branch `content-first`:
 - A small stock anchor on a chain moves in the right-hand margin (`src/components/AnchorRail.tsx`).
   It hangs low at the top of the page, is hauled up as you scroll, and swings gently while
   moving. Below 1280px it shrinks to a slim rail and the content gets matching right padding.
+
+## Logo and anchor (2026-11-12)
+
+- New ANCHOR39 logo (compass ring with a teal triangle), redrawn as SVG in
+  `src/components/Logo.tsx` and used for the favicon (`public/favicon.svg`).
+- The hero picture is removed; the hero is headline, intro and buttons only.
+- The moving anchor now sits in the left-hand margin and is a little larger.
