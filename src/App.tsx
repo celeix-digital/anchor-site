@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { DEMO_URL, control, hero, how, live, nav, problem, surface, type Side } from './content'
 import { AnchorGlyph } from './components/Logo'
+import AnchorRail from './components/AnchorRail'
 
 function Nav() {
   const ref = useRef<HTMLElement>(null)
@@ -42,19 +43,48 @@ function Nav() {
   )
 }
 
+/** Fade-and-rise as elements enter the viewport. Off under reduced motion. */
+function useReveal() {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.reveal'))
+    const show = (el: Element) => el.classList.add('is-in')
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      els.forEach(show)
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            show(e.target)
+            io.unobserve(e.target)
+          }
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+}
+
+const d = (ms: number) => ({ ['--d' as string]: `${ms}ms` })
+
 function Hero() {
   return (
     <section id="top" className="hero" aria-labelledby="hero-title">
       <div className="wrap">
         <h1 id="hero-title" className="display hero-title">
           {hero.lines.map(([a, b], i) => (
-            <span key={i} className="hero-line">
+            <span key={i} className="hero-line reveal" style={d(60 + i * 90)}>
               <span className="nowrap">{a}</span> <span className="nowrap">{b}</span>
             </span>
           ))}
         </h1>
-        <p className="lede hero-sub">{hero.sub}</p>
-        <div className="actions">
+        <p className="lede hero-sub reveal" style={d(260)}>
+          {hero.sub}
+        </p>
+        <div className="actions reveal" style={d(340)}>
           <a className="btn btn-primary" href={DEMO_URL}>
             {hero.primary}
           </a>
@@ -62,7 +92,7 @@ function Hero() {
             {hero.secondary}
           </a>
         </div>
-        <figure className="hero-figure">
+        <figure className="hero-figure reveal reveal-zoom" style={d(440)}>
           <img src={hero.image.src} width={hero.image.width} height={hero.image.height} alt="" fetchPriority="high" decoding="async" />
         </figure>
       </div>
@@ -74,13 +104,13 @@ function Problem() {
   return (
     <section className="section" aria-labelledby="problem-title">
       <div className="wrap split">
-        <div>
+        <div className="reveal">
           <h2 id="problem-title" className="display h2">
             {problem.heading}
           </h2>
           <p className="note">{problem.note}</p>
         </div>
-        <div className="stack">
+        <div className="stack reveal" style={d(120)}>
           {problem.body.map((t, i) => (
             <p key={i} className={i === problem.body.length - 1 ? 'emph' : 'copy'}>
               {t}
@@ -97,7 +127,7 @@ function How() {
   return (
     <section id="how" className="section section-tint" aria-labelledby="how-title">
       <div className="wrap">
-        <h2 id="how-title" className="display h2 section-title">
+        <h2 id="how-title" className="display h2 section-title reveal">
           {how.heading}
         </h2>
         <div className="lanes">
@@ -107,7 +137,7 @@ function How() {
               <ol className="lane-steps">
                 {how.steps.map((s, i) =>
                   s.side === side ? (
-                    <li key={s.title} className="step" value={i + 1}>
+                    <li key={s.title} className="step reveal" value={i + 1} style={d(i * 90)}>
                       <span className="step-num" aria-hidden="true">
                         {i + 1}
                       </span>
@@ -134,7 +164,7 @@ type Shot = { src: string; width: number; height: number; alt: string }
 
 function Feature({ side, title, caption, image, bleed, zoom }: { side: Side; title: string; caption: string; image: Shot; bleed?: boolean; zoom?: boolean }) {
   return (
-    <article className={`feature feature-${side}${bleed ? ' feature-bleed' : ''}${zoom ? ' feature-zoom' : ''}`}>
+    <article className={`feature reveal feature-${side}${bleed ? ' feature-bleed' : ''}${zoom ? ' feature-zoom' : ''}`}>
       <div className="feature-text">
         <h3 className="h3 feature-title">{title}</h3>
         <p className="copy">{caption}</p>
@@ -150,10 +180,10 @@ function Live() {
   return (
     <section id="live" className="section" aria-labelledby="live-title">
       <div className="wrap">
-        <h2 id="live-title" className="display h2 section-title">
+        <h2 id="live-title" className="display h2 section-title reveal">
           {live.heading}
         </h2>
-        <ul className="legend" aria-label="Key">
+        <ul className="legend reveal" aria-label="Key" style={d(80)}>
           <li className="legend-ai">{live.legend.ai}</li>
           <li className="legend-team">{live.legend.team}</li>
         </ul>
@@ -176,10 +206,12 @@ function Control() {
           Human control
         </h2>
         <div className="control-pair">
-          <p className="display control-statement control-ai">{control.ai}</p>
-          <p className="display control-statement control-team">{control.team}</p>
+          <p className="display control-statement control-ai reveal">{control.ai}</p>
+          <p className="display control-statement control-team reveal" style={d(140)}>
+            {control.team}
+          </p>
         </div>
-        <p className="lede control-closing">{control.closing.join(' ')}</p>
+        <p className="lede control-closing reveal" style={d(200)}>{control.closing.join(' ')}</p>
       </div>
     </section>
   )
@@ -189,7 +221,7 @@ function Cta() {
   return (
     <section id="surface" className="section cta-section" aria-labelledby="cta-title">
       <div className="wrap">
-        <div className="cta-panel">
+        <div className="cta-panel reveal">
           <h2 id="cta-title" className="display h2">
             {surface.heading.split(/(?<=\.) /).map((t) => (
               <span key={t} className="h2-line">
@@ -229,8 +261,10 @@ function Footer() {
 }
 
 export default function App() {
+  useReveal()
   return (
     <>
+      <AnchorRail />
       <a className="skip-link" href="#main">
         {nav.skip}
       </a>

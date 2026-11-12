@@ -18,3 +18,11 @@ What changed on branch `content-first`:
 - Copy that only made sense with the animation was dropped: "Scroll to weigh anchor" and
   "Back to the seabed".
 - The animated version is preserved at tag `animated-v1`.
+
+## Motion pass (2026-11-12)
+
+- Claude-style transitions: sections fade and rise slightly as they enter, the hero staggers in
+  on load, and cards and buttons lift a little on hover. All of it is off under reduced motion.
+- A small stock anchor on a chain moves in the right-hand margin (`src/components/AnchorRail.tsx`).
+  It hangs low at the top of the page, is hauled up as you scroll, and swings gently while
+  moving. Below 1280px it shrinks to a slim rail and the content gets matching right padding.
