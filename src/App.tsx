@@ -73,27 +73,62 @@ const d = (ms: number) => ({ ['--d' as string]: `${ms}ms` })
 function Hero() {
   return (
     <section id="top" className="hero" aria-labelledby="hero-title">
-      <div className="wrap">
-        <h1 id="hero-title" className="display hero-title">
-          {hero.lines.map(([a, b], i) => (
-            <span key={i} className="hero-line reveal" style={d(60 + i * 90)}>
-              <span className="nowrap">{a}</span> <span className="nowrap">{b}</span>
-            </span>
-          ))}
-        </h1>
-        <p className="lede hero-sub reveal" style={d(260)}>
-          {hero.sub}
-        </p>
-        <div className="actions reveal" style={d(340)}>
-          <a className="btn btn-primary" href={DEMO_URL}>
-            {hero.primary}
-          </a>
-          <a className="btn btn-secondary" href="#how">
-            {hero.secondary}
-          </a>
+      <div className="wrap hero-grid">
+        <div className="hero-copy">
+          <h1 id="hero-title" className="display hero-title">
+            {hero.lines.map(([a, b], i) => (
+              <span key={i} className="hero-line reveal" style={d(60 + i * 90)}>
+                <span className="nowrap">{a}</span> <span className="nowrap">{b}</span>
+              </span>
+            ))}
+          </h1>
+          <p className="lede hero-sub reveal" style={d(260)}>
+            {hero.sub}
+          </p>
+          <div className="actions reveal" style={d(340)}>
+            <a className="btn btn-primary" href={DEMO_URL}>
+              {hero.primary}
+            </a>
+            <a className="btn btn-secondary" href="#how">
+              {hero.secondary}
+            </a>
+          </div>
         </div>
+        <HeroVisual />
       </div>
     </section>
+  )
+}
+
+/** Real product screenshots, layered: the shared inbox with an AI draft waiting for review. */
+function HeroVisual() {
+  return (
+    <div className="hero-visual" aria-hidden="true">
+      <div className="hv-bg reveal" style={d(200)}>
+        <svg className="hv-ring" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="17.2" fill="none" stroke="currentColor" strokeWidth="0.9" />
+          <g fill="currentColor">
+            <rect x="23.4" y="1.4" width="1.2" height="5.2" />
+            <rect x="23.4" y="41.4" width="1.2" height="5.2" />
+            <rect x="1.4" y="23.4" width="5.2" height="1.2" />
+            <rect x="41.4" y="23.4" width="5.2" height="1.2" />
+          </g>
+        </svg>
+      </div>
+      <figure className="hv-window reveal reveal-zoom" style={d(380)}>
+        <div className="hv-bar">
+          <span className="hv-dot" />
+          <span className="hv-dot" />
+          <span className="hv-dot" />
+          <span className="hv-title">{live.inbox.header}</span>
+        </div>
+        <img src={live.inbox.image.src} width={live.inbox.image.width} height={live.inbox.image.height} alt="" fetchPriority="high" decoding="async" />
+      </figure>
+      <figure className="hv-card reveal" style={d(620)}>
+        <span className="hv-pill">{live.drafts.status}</span>
+        <img src={live.drafts.image.src} width={live.drafts.image.width} height={live.drafts.image.height} alt="" decoding="async" />
+      </figure>
+    </div>
   )
 }
 

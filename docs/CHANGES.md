@@ -33,3 +33,9 @@ What changed on branch `content-first`:
   `src/components/Logo.tsx` and used for the favicon (`public/favicon.svg`).
 - The hero picture is removed; the hero is headline, intro and buttons only.
 - The moving anchor now sits in the left-hand margin and is a little larger.
+
+## Hero visual (2026-11-12)
+
+- The hero now has a product visual on the right, built from real screenshots: the shared
+  inbox in an app window, with the AI draft composer overlapping it under a "Needs your review"
+  pill, on a soft teal-to-amber panel with a faint compass ring from the logo.
