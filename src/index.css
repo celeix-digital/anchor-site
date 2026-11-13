@@ -17,7 +17,7 @@
   --surface: #ffffff;
   --ink: #0b2a4a;
   --text: #33475b;
-  --muted: #5b6e80;
+  --muted: #53667a;
   --line: #e2ddd2;
   --navy: #0b2a4a;
   --foam: #eef7f9;
@@ -313,7 +313,7 @@ img {
   color: var(--ink);
   background: var(--tint);
 }
-@media (max-width: 759px) {
+@media (max-width: 1079px) {
   .nav-links {
     display: none;
   }
@@ -1034,48 +1034,6 @@ img {
 }
 .h2-line {
   display: block;
-}
-
-/* ---------- Footer ---------- */
-.footer {
-  border-top: 1px solid var(--line);
-  padding: 28px 0 calc(28px + var(--sab));
-}
-.footer-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 24px;
-}
-.footer .brand {
-  margin-right: 0;
-}
-.footer .brand-word {
-  font-size: 1.25rem;
-}
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 4px;
-  margin-right: auto;
-}
-.footer-links a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 10px;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 0.9375rem;
-}
-.footer-links a:hover {
-  color: var(--ink);
-  text-decoration: underline;
-}
-.footer-copy {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.875rem;
 }
 
 /* ---------- Motion: reveal on scroll ----------
