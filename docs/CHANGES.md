@@ -39,3 +39,19 @@ What changed on branch `content-first`:
 - The hero now has a product visual on the right, built from real screenshots: the shared
   inbox in an app window, with the AI draft composer overlapping it under a "Needs your review"
   pill, on a soft teal-to-amber panel with a faint compass ring from the logo.
+
+## Sections, teal buttons and naming (2026-11-13)
+
+- Buttons use the logo's teal (`#38b0b8`) with navy text (5.6:1) instead of amber. Amber
+  still marks "what your team does".
+- "ANCHOR39" now appears only in the nav logo (and the page title/SEO tags). Everywhere else
+  the product is "ANCHOR": headings, body copy, footer, demo email subject.
+- Every section has a small eyebrow label.
+- The problem: a visual of agents, terminals, pilots, surveyors and owners all writing into
+  one shared inbox (the example messages are the illustrative ones already in `content.ts`).
+- How it works: each lane is a tinted panel with an icon, and steps have filled number badges.
+- Live today: each feature has an "AI" or "Your team" tag, and screenshot panels have a soft
+  gradient and dot grid. The separate legend was removed.
+- Human control: the two statements are cards (white for the AI, navy for your team) with a
+  hand-off arrow between them.
+- Closing panel: a large, faint compass mark from the logo sits behind the text.

@@ -1,6 +1,6 @@
 // All copy for anchor39.com lives here. Sentence case, typographic quotes.
 
-export const DEMO_URL = 'mailto:hello@anchor39.com?subject=Book%20an%20ANCHOR39%20demo'
+export const DEMO_URL = 'mailto:hello@anchor39.com?subject=Book%20an%20ANCHOR%20demo'
 
 export const site = {
   name: 'ANCHOR39',
@@ -12,6 +12,7 @@ export const site = {
 export const nav = {
   skip: 'Skip to content',
   homeLabel: 'ANCHOR39 home',
+  footerHomeLabel: 'ANCHOR home',
   links: [
     { href: '#how', label: 'How it works' },
     { href: '#live', label: 'Live today' },
@@ -32,6 +33,9 @@ export const hero = {
 }
 
 export const problem = {
+  eyebrow: 'The problem',
+  // The people named in the body copy, shown writing into one inbox.
+  parties: ['Agents', 'Terminals', 'Pilots', 'Surveyors', 'Owners'],
   heading: 'One port call. Eight stages. About 57 emails.', // TODO: confirm before launch
   note: 'Counted on a mapped liquid-bulk vessel call.',
   body: [
@@ -43,7 +47,8 @@ export const problem = {
 export type Side = 'ai' | 'team'
 
 export const how = {
-  heading: 'How a port call runs on ANCHOR39',
+  eyebrow: 'How it works',
+  heading: 'How a port call runs on ANCHOR',
   lanes: { ai: 'What the AI does', team: 'What your team does' },
   steps: [
     {
@@ -59,7 +64,7 @@ export const how = {
     {
       side: 'ai' as Side,
       title: 'Drafts the reply',
-      body: 'For routine updates, ANCHOR39 prepares a reply and leaves it in the thread as a draft.',
+      body: 'For routine updates, ANCHOR prepares a reply and leaves it in the thread as a draft.',
     },
     {
       side: 'team' as Side,
@@ -71,6 +76,7 @@ export const how = {
 
 // Screenshots are from the ANCHOR app running on synthetic QA data.
 export const live = {
+  eyebrow: 'Live today',
   heading: 'Live today for shipping agents',
   legend: { ai: 'What the AI does', team: 'What your team does' },
   classification: {
@@ -148,7 +154,12 @@ export const live = {
 }
 
 export const control = {
-  ai: 'ANCHOR39 reads, sorts and drafts.',
+  eyebrow: 'Human control',
+  aiVerbs: ['Reads', 'Sorts', 'Drafts'],
+  teamVerbs: ['Reviews', 'Edits', 'Sends'],
+  aiLabel: 'What the AI does',
+  teamLabel: 'What your team does',
+  ai: 'ANCHOR reads, sorts and drafts.',
   team: 'Your team reviews, edits and sends.',
   // One paragraph, set either side of the chain.
   closing: [
@@ -159,8 +170,8 @@ export const control = {
 
 export const surface = {
   heading: 'Anchor clear. Ready when you are.',
-  line: 'ANCHOR39 is live today for shipping agents.',
+  line: 'ANCHOR is live today for shipping agents.',
   primary: 'Book a demo',
-  footer: '© 2026 ANCHOR39',
+  footer: '© 2026 ANCHOR',
 }
 

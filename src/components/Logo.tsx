@@ -1,4 +1,4 @@
-// ANCHOR39 mark: a compass ring with four ticks around a teal triangle and centre dot.
+// ANCHOR mark: a compass ring with four ticks around a teal triangle and centre dot.
 // The ring uses currentColor so it can sit on light or dark backgrounds.
 export function LogoMark({ className }: { className?: string }) {
   return (
