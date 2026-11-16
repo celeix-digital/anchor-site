@@ -2,19 +2,14 @@ import { useState, type FormEvent, type ReactNode } from 'react'
 import { CONTACT_EMAIL, type Shot } from '../content/shared'
 import { form, type Interest } from '../content/demo'
 import { navigate } from '../router'
-import { MailIcon, SparkIcon, TeamIcon } from './Icons'
-import { Eyebrow, d } from './ui'
+import { Screen, d } from './ui'
 
 /** Inner-page hero: copy on the left, an optional visual on the right. */
-export function PageHero({ eyebrow, badge, lines, sub, actions, visual, notice }: { eyebrow: string; badge?: ReactNode; lines: readonly string[]; sub: string; actions?: ReactNode; visual?: ReactNode; notice?: ReactNode }) {
+export function PageHero({ lines, sub, actions, visual, notice, stacked }: { lines: readonly string[]; sub: string; actions?: ReactNode; visual?: ReactNode; notice?: ReactNode; stacked?: boolean }) {
   return (
-    <section className={`hero page-hero${visual ? '' : ' page-hero-solo'}`} aria-labelledby="hero-title">
-      <div className="wrap hero-grid">
+    <section className={`hero page-hero${visual ? '' : ' page-hero-solo'}${stacked ? ' hero-stacked' : ''}`} aria-labelledby="hero-title">
+      <div className={`wrap${stacked ? '' : ' hero-grid'}`}>
         <div className="hero-copy">
-          <div className="hero-meta reveal">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            {badge}
-          </div>
           <h1 id="hero-title" className="display hero-title">
             {lines.map((l, i) => (
               <span key={l} className="hero-line reveal" style={d(60 + i * 90)}>
@@ -36,7 +31,8 @@ export function PageHero({ eyebrow, badge, lines, sub, actions, visual, notice }
             </div>
           )}
         </div>
-        {visual && (
+        {visual && stacked && visual}
+        {visual && !stacked && (
           <div className="page-hero-visual reveal reveal-zoom" style={d(300)}>
             {visual}
           </div>
@@ -46,33 +42,15 @@ export function PageHero({ eyebrow, badge, lines, sub, actions, visual, notice }
   )
 }
 
-const sideIcon = { ai: SparkIcon, team: TeamIcon, mail: MailIcon }
-const sideText = { ai: 'What the AI does', team: 'What your team does' }
-
-/** A full-width row: text on one side, a real screenshot on the other. */
-export function Feature({ side, title, caption, image, bleed, zoom, marker, label }: { side: 'ai' | 'team'; title: string; caption: string; image: Shot; bleed?: boolean; zoom?: boolean; marker?: string; label?: string }) {
-  const Icon = sideIcon[side]
+/** A full-width row: a heading and one line on one side, a real screen on the other. */
+export function Feature({ title, caption, image, flip }: { title: string; caption: string; image: Shot; flip?: boolean }) {
   return (
-    <article className={`feature reveal feature-${side}${bleed ? ' feature-bleed' : ''}${zoom ? ' feature-zoom' : ''}`}>
+    <article className={`feature reveal${flip ? ' feature-flip' : ''}`}>
       <div className="feature-text">
-        <div className="feature-meta">
-          {marker && (
-            <span className="feature-marker" aria-hidden="true">
-              {marker}
-            </span>
-          )}
-          {label && <span className="feature-label">{label}</span>}
-        </div>
-        <span className={`tag tag-${side}`}>
-          <Icon className="tag-icon" />
-          {sideText[side]}
-        </span>
         <h3 className="h3 feature-title">{title}</h3>
         <p className="copy">{caption}</p>
       </div>
-      <figure className="shot-panel">
-        <img className="shot" src={image.src} width={image.width} height={image.height} alt={image.alt} loading="lazy" decoding="async" />
-      </figure>
+      <Screen shot={image} className="feature-screen" />
     </article>
   )
 }

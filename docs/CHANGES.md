@@ -84,3 +84,19 @@ All pages and copy from the live anchor39.com, rebuilt in this site's style:
   `CONTACT_EMAIL` in `src/content/shared.ts` (TODO: confirm before launch). The copy around the
   form says exactly that.
 - The old home sections ("AI reads the mail…", "About 57 emails") are replaced by the live copy.
+
+## Team review (2026-11-16)
+
+Action items and their status are in `docs/REVIEW-2026-11-16.md`. In short:
+
+- New full-app product screens with the expanded sidebar, port dropdown, notifications and the
+  Action required list, built by `scripts/compose-shots.mjs` from the QA runs. Test-only labels
+  are relabelled in the app's own font instead of blurred. Each screen has a phone crop.
+- Stacked heroes with a large, frameless screen. "Follow one email" is an auto-advancing
+  slideshow with step pointers under the screen and a pause button.
+- Home page cut to hero, slideshow, the problem, who it's for, services banner and CTA.
+- Labels above headings, status badges ("Live today"), fine print, the symbol legend and the
+  footer status cards are gone. Amber is replaced with slate blue.
+- Vision is now About (/vision redirects): a short "Why ANCHOR39", How we build, the trust ladder.
+- Mobile: the menu opens over the page, tighter spacing and type, phone-sized screenshots.
+- About 1,200 lines of unused CSS removed.

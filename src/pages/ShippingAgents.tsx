@@ -1,8 +1,8 @@
 import { shipping } from '../content/shipping'
-import { notScreenshot, shots } from '../content/shared'
+import { shots } from '../content/shared'
 import { usePageMeta } from '../router'
 import { MailIcon, SparkIcon, TeamIcon } from '../components/Icons'
-import { Badge, Button, CtaPanel, Eyebrow, Glyph, SectionHead, ShotFrame, d } from '../components/ui'
+import { Button, CtaPanel, Glyph, Screen, SectionHead, d } from '../components/ui'
 import { Feature, PageHero } from '../components/blocks'
 
 export default function ShippingAgents() {
@@ -11,8 +11,7 @@ export default function ShippingAgents() {
   return (
     <>
       <PageHero
-        eyebrow={s.hero.eyebrow}
-        badge={<Badge state="live">{s.hero.badge}</Badge>}
+        stacked
         lines={s.hero.lines}
         sub={s.hero.sub}
         actions={
@@ -23,7 +22,7 @@ export default function ShippingAgents() {
             </Button>
           </>
         }
-        visual={<ShotFrame shot={shots.inbox} title={s.hero.window} fit="wide" className="hero-frame" eager />}
+        visual={<Screen shot={shots.thread} eager className="hero-screen reveal reveal-zoom" style={d(300)} />}
       />
       <Today />
       <Changes />
@@ -38,7 +37,7 @@ function Today() {
   return (
     <section className="section section-tint" aria-labelledby="today-title">
       <div className="wrap">
-        <SectionHead id="today-title" eyebrow={t.eyebrow} title={t.heading} sub={t.body} />
+        <SectionHead id="today-title" title={t.heading} sub={t.body} />
         <figure className="compare reveal" style={d(100)}>
           <div className="compare-panel compare-before">
             <p className="compare-label">{t.before.label}</p>
@@ -79,7 +78,6 @@ function Today() {
               </div>
             </div>
           </div>
-          <figcaption className="fineprint">{t.note}</figcaption>
         </figure>
       </div>
     </section>
@@ -91,23 +89,12 @@ function Changes() {
   return (
     <section id="changes" className="section" aria-labelledby="changes-title">
       <div className="wrap">
-        <SectionHead id="changes-title" eyebrow={c.eyebrow} title={c.heading} sub={c.sub} />
+        <SectionHead id="changes-title" title={c.heading} />
         <div className="features">
-          {c.features.map((f) => (
-            <Feature
-              key={f.n}
-              side={f.side}
-              marker={f.n}
-              label={f.label}
-              title={f.title}
-              caption={f.body}
-              image={f.shot}
-              bleed={'bleed' in f && f.bleed}
-              zoom={'zoom' in f && f.zoom}
-            />
+          {c.features.map((f, n) => (
+            <Feature key={f.title} title={f.title} caption={f.body} image={f.shot} flip={n % 2 === 1} />
           ))}
         </div>
-        <p className="fineprint reveal">{notScreenshot}</p>
       </div>
     </section>
   )
@@ -118,7 +105,7 @@ function Control() {
   return (
     <section className="section section-tint" aria-labelledby="sa-control-title">
       <div className="wrap">
-        <SectionHead id="sa-control-title" eyebrow={c.eyebrow} title={c.heading} sub={c.body} />
+        <SectionHead id="sa-control-title" title={c.heading} sub={c.body} />
         <div className="control-pair">
           <div className="cc cc-ai reveal">
             <p className="cc-head">
@@ -159,7 +146,7 @@ function Control() {
           </div>
         </div>
         <div className="not-today reveal" style={d(120)}>
-          <Eyebrow>{c.notToday.title}</Eyebrow>
+          <h3 className="h4">{c.notToday.title}</h3>
           <ul>
             {c.notToday.items.map((it) => (
               <li key={it.title}>

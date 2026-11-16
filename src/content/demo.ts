@@ -32,16 +32,15 @@ export const form = {
     role: 'Please enter your role.',
     consent: 'Please tick the box so we can follow up.',
   },
-  subject: (interest: string, company: string) => `ANCHOR request: ${interest}${company ? ` — ${company}` : ''}`,
+  subject: (interest: string, company: string) => `ANCHOR request: ${interest}${company ? `, ${company}` : ''}`,
 }
 
 export const demo = {
   meta: {
-    title: 'Book a demo — ANCHOR',
+    title: 'Book a demo | ANCHOR',
     description: 'Bring us one port call. Tell us about your desk and the team follows up from your request.',
   },
   hero: {
-    eyebrow: { default: 'Book a demo', webinar: 'Webinar · Interest only' },
     heading: {
       default: 'Bring us one port call.',
       services: 'Talk to us about your operation.',
@@ -61,13 +60,8 @@ export const demo = {
       { t: 'Read by the team', d: 'Someone reads the request and follows up from it. No set response time.', done: false },
     ],
   },
-  pending: {
-    title: 'Not connected yet',
-    items: ['Calendar booking', 'Email confirmation', 'CRM delivery', 'Webinar registration'],
-    note: 'These are pending launch. Until then, submitting opens an email and nothing more.',
-  },
   covers: {
-    title: 'What a demo covers · Live for shipping agents',
+    title: 'What a demo covers',
     items: [
       { state: 'ai', t: 'The shared inbox and how email is classified' },
       { state: 'ai', t: 'Vessel and port-call tracking alongside the mail' },
@@ -78,15 +72,13 @@ export const demo = {
 }
 
 export const thanks = {
-  meta: { title: 'Request ready — ANCHOR', description: 'Your request is ready to send from your email app.' },
+  meta: { title: 'Request ready | ANCHOR', description: 'Your request is ready to send from your email app.' },
   ready: {
-    eyebrow: 'Request ready',
     heading: 'One step left: press send.',
     body: 'Your email app should have opened with your request filled in. Once you send it, someone on the team reads it and follows up. No set response time.',
     fallback: 'If nothing opened, email us at',
   },
   none: {
-    eyebrow: 'No request on file',
     heading: 'Nothing to confirm yet.',
     body: 'We don’t see a recent request in this browser session. If you meant to send one, start again below.',
   },

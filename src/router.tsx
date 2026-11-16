@@ -51,6 +51,12 @@ export function navigate(to: string) {
   )
 }
 
+/** Swap the current address without adding a history entry (for old links). */
+export function redirect(to: string) {
+  history.replaceState(null, '', to)
+  emit()
+}
+
 /** On first load, honour a hash once the page has rendered. */
 export function useInitialHash() {
   useEffect(() => {

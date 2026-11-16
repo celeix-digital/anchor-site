@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { demo, thanks, type Interest } from '../content/demo'
 import { CONTACT_EMAIL } from '../content/shared'
 import { useLocation, usePageMeta } from '../router'
-import { Button, Eyebrow, Glyph, d } from '../components/ui'
+import { Button, Glyph, d } from '../components/ui'
 import { RequestForm } from '../components/blocks'
 
 const interests: Interest[] = ['demo', 'services', 'terminal', 'webinar']
@@ -19,9 +19,6 @@ export function BookDemo() {
     <>
       <section className="hero page-hero page-hero-solo page-hero-short" aria-labelledby="hero-title">
         <div className="wrap">
-          <div className="hero-meta reveal">
-            <Eyebrow>{interest === 'webinar' ? h.eyebrow.webinar : h.eyebrow.default}</Eyebrow>
-          </div>
           <h1 id="hero-title" className="display hero-title reveal" style={d(60)}>
             {heading}
           </h1>
@@ -37,7 +34,7 @@ export function BookDemo() {
           </div>
           <aside className="demo-aside reveal" style={d(100)}>
             <div className="demo-block">
-              <Eyebrow>{demo.after.title}</Eyebrow>
+              <h2 className="demo-block-title">{demo.after.title}</h2>
               <ol className="timeline">
                 {demo.after.steps.map((s, n) => (
                   <li key={s.t} className={s.done ? 'is-done' : ''}>
@@ -49,16 +46,7 @@ export function BookDemo() {
               </ol>
             </div>
             <div className="demo-block">
-              <Eyebrow>{demo.pending.title}</Eyebrow>
-              <ul className="pending-list">
-                {demo.pending.items.map((it) => (
-                  <li key={it}>{it}</li>
-                ))}
-              </ul>
-              <p className="fineprint">{demo.pending.note}</p>
-            </div>
-            <div className="demo-block">
-              <Eyebrow>{demo.covers.title}</Eyebrow>
+              <h2 className="demo-block-title">{demo.covers.title}</h2>
               <ul className="covers-list">
                 {demo.covers.items.map((it) => (
                   <li key={it.t}>
@@ -84,14 +72,10 @@ export function ThankYou() {
     }
   })
   const c = ready ? thanks.ready : thanks.none
-  usePageMeta(ready ? thanks.meta.title : 'Nothing to confirm yet — ANCHOR', ready ? thanks.meta.description : c.body)
+  usePageMeta(ready ? thanks.meta.title : 'Nothing to confirm yet | ANCHOR', ready ? thanks.meta.description : c.body)
   return (
     <section className="section section-navy thanks" aria-labelledby="hero-title">
       <div className="wrap thanks-inner">
-        <p className="thanks-eyebrow reveal">
-          <Glyph state="human" />
-          {c.eyebrow}
-        </p>
         <h1 id="hero-title" className="display hero-title reveal" style={d(60)}>
           {c.heading}
         </h1>

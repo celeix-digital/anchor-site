@@ -31,22 +31,6 @@ export function useReveal(key: string) {
   }, [key])
 }
 
-export function Eyebrow({ children, onDark }: { children: ReactNode; onDark?: boolean }) {
-  return <p className={`eyebrow${onDark ? ' eyebrow-dark' : ''}`}>{children}</p>
-}
-
-export type State = 'live' | 'design' | 'future' | 'separate'
-
-/** A small status label: Live today, In design, Future direction, Separate from the software. */
-export function Badge({ state, children }: { state: State; children: ReactNode }) {
-  return (
-    <span className={`badge badge-${state}`}>
-      <span className="badge-dot" aria-hidden="true" />
-      {children}
-    </span>
-  )
-}
-
 /** The product's state family: hollow ring (AI-drafted), solid disc (reviewed by a person), open cross (needs attention). */
 export function Glyph({ state, className = '' }: { state: 'ai' | 'human' | 'attention'; className?: string }) {
   return (
@@ -58,10 +42,9 @@ export function Glyph({ state, className = '' }: { state: 'ai' | 'human' | 'atte
   )
 }
 
-export function SectionHead({ eyebrow, title, id, sub, onDark, wide }: { eyebrow?: string; title: ReactNode; id: string; sub?: ReactNode; onDark?: boolean; wide?: boolean }) {
+export function SectionHead({ title, id, sub, onDark, wide }: { title: ReactNode; id: string; sub?: ReactNode; onDark?: boolean; wide?: boolean }) {
   return (
-    <div className={`section-head reveal${wide ? ' section-head-wide' : ''}`}>
-      {eyebrow && <Eyebrow onDark={onDark}>{eyebrow}</Eyebrow>}
+    <div className={`section-head reveal${wide ? ' section-head-wide' : ''}${onDark ? ' section-head-dark' : ''}`}>
       <h2 id={id} className="display h2">
         {title}
       </h2>
@@ -88,20 +71,52 @@ export function Button({ href, children, variant = 'primary', small }: { href: s
   )
 }
 
-/** A real product screenshot in a simple app-window frame. */
-export function ShotFrame({ shot, title, fit = 'fit', className = '', eager }: { shot: Shot; title?: string; fit?: 'fit' | 'wide' | 'strip'; className?: string; eager?: boolean }) {
+/**
+ * A real product screen, shown edge to edge with no window chrome. Phones get a
+ * tighter crop of the same screen so the text stays readable.
+ */
+export function Screen({ shot, eager, inactive, className = '', style }: { shot: Shot; eager?: boolean; inactive?: boolean; className?: string; style?: CSSProperties }) {
   return (
-    <figure className={`frame frame-${fit} ${className}`}>
-      <div className="frame-bar" aria-hidden="true">
-        <span className="hv-dot" />
-        <span className="hv-dot" />
-        <span className="hv-dot" />
-        {title && <span className="hv-title">{title}</span>}
-      </div>
-      <div className="frame-body">
-        <img src={shot.src} width={shot.width} height={shot.height} alt={shot.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
-      </div>
+    <figure className={`screen ${className}`} style={style} aria-hidden={inactive || undefined}>
+      <picture>
+        {shot.mobile && <source media="(max-width: 640px)" srcSet={shot.mobile} />}
+        <img
+          src={shot.src}
+          width={shot.width}
+          height={shot.height}
+          alt={inactive ? '' : shot.alt}
+          loading={eager ? 'eager' : 'lazy'}
+          fetchPriority={eager ? 'high' : undefined}
+          decoding="async"
+        />
+      </picture>
     </figure>
+  )
+}
+
+/** A full-width light banner with a heading, one line and actions. */
+export function Banner({ heading, body, primary, secondary, id }: { heading: string; body: string; primary: { href: string; label: string }; secondary?: { href: string; label: string }; id: string }) {
+  return (
+    <section className="section banner-section" aria-labelledby={id}>
+      <div className="wrap">
+        <div className="banner reveal">
+          <div>
+            <h2 id={id} className="display h2">
+              {heading}
+            </h2>
+            <p className="lede">{body}</p>
+          </div>
+          <div className="actions">
+            <Button href={primary.href}>{primary.label}</Button>
+            {secondary && (
+              <Button href={secondary.href} variant="secondary">
+                {secondary.label}
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

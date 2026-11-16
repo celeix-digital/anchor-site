@@ -1,7 +1,7 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { services, zoneGroups, zones } from '../content/services'
 import { usePageMeta } from '../router'
-import { Badge, Button, Eyebrow, SectionHead, d } from '../components/ui'
+import { Button, SectionHead, d } from '../components/ui'
 import { HeroChart, PageHero, RequestForm } from '../components/blocks'
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -12,8 +12,6 @@ export default function Services() {
   return (
     <>
       <PageHero
-        eyebrow={s.hero.eyebrow}
-        badge={<Badge state="separate">{s.hero.badge}</Badge>}
         lines={s.hero.lines}
         sub={s.hero.sub}
         actions={
@@ -33,7 +31,7 @@ export default function Services() {
       <People />
       <section id="contact" className="section" aria-labelledby="contact-title">
         <div className="wrap form-grid">
-          <SectionHead id="contact-title" eyebrow={s.contact.eyebrow} title={s.contact.heading} sub={s.contact.body} />
+          <SectionHead id="contact-title" title={s.contact.heading} sub={s.contact.body} />
           <div className="form-card reveal" style={d(100)}>
             <RequestForm defaultInterest="services" />
           </div>
@@ -48,7 +46,7 @@ function Work() {
   return (
     <section className="section section-tint" aria-labelledby="work-title">
       <div className="wrap">
-        <SectionHead id="work-title" eyebrow={w.eyebrow} title={w.heading} sub={w.body} />
+        <SectionHead id="work-title" title={w.heading} sub={w.body} />
         <div className="qa-table reveal" style={d(100)}>
           <div className="qa-head" aria-hidden="true">
             <span>{w.colWork}</span>
@@ -104,7 +102,7 @@ function Journey() {
   return (
     <section id="zones" className="section section-navy" aria-labelledby="zones-title">
       <div className="wrap">
-        <SectionHead id="zones-title" eyebrow={j.eyebrow} title={j.heading} sub={j.body} onDark />
+        <SectionHead id="zones-title" title={j.heading} sub={j.body} onDark />
         <p className="journey-tag reveal">
           <span className="journey-tag-chip">{j.tag}</span>
           <span>{j.tagNote}</span>
@@ -158,7 +156,7 @@ function Journey() {
               <p className="journey-desc">{z.d}</p>
             </div>
             <div>
-              <Eyebrow onDark>{j.people}</Eyebrow>
+              <h4 className="journey-people-title">{j.people}</h4>
               <ul className="journey-people">
                 {z.r.map((r) => (
                   <li key={r}>{r}</li>
@@ -176,7 +174,6 @@ function Journey() {
           </div>
           <p className="journey-keys">{j.keys}</p>
         </div>
-        <p className="fineprint fineprint-dark reveal">{j.note}</p>
       </div>
     </section>
   )
@@ -187,7 +184,7 @@ function Path() {
   return (
     <section className="section" aria-labelledby="path-title">
       <div className="wrap">
-        <SectionHead id="path-title" eyebrow={p.eyebrow} title={p.heading} />
+        <SectionHead id="path-title" title={p.heading} />
         <ol className="path">
           {p.steps.map((s, n) => (
             <li key={s.tag} className={`path-step path-${n} reveal`} style={d(n * 90)}>
@@ -208,7 +205,7 @@ function Find() {
   return (
     <section className="section section-tint" aria-labelledby="find-title">
       <div className="wrap split">
-        <SectionHead id="find-title" eyebrow={f.eyebrow} title={f.heading} sub={f.body} />
+        <SectionHead id="find-title" title={f.heading} sub={f.body} />
         <ol className="num-list num-list-cards reveal" style={d(100)}>
           {f.items.map((it, n) => (
             <li key={it}>
@@ -227,7 +224,7 @@ function People() {
   return (
     <section className="section" aria-labelledby="people-title">
       <div className="wrap">
-        <SectionHead id="people-title" eyebrow={p.eyebrow} title={p.heading} sub={`${p.groups.join(' · ')}.`} />
+        <SectionHead id="people-title" title={p.heading} sub={`${p.groups.join(' · ')}.`} />
         <div className="matrix-wrap reveal" style={d(100)} tabIndex={0} role="region" aria-label={p.heading}>
           <table className="matrix">
             <caption>{p.caption}</caption>
@@ -254,7 +251,6 @@ function People() {
             </tbody>
           </table>
         </div>
-        <p className="copy matrix-note reveal">{p.note}</p>
       </div>
     </section>
   )

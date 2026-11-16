@@ -1,6 +1,6 @@
 import { terminals } from '../content/terminals'
 import { usePageMeta } from '../router'
-import { Badge, Button, Glyph, SectionHead, d } from '../components/ui'
+import { Button, Glyph, SectionHead, d } from '../components/ui'
 import { HeroChart, PageHero, RequestForm } from '../components/blocks'
 
 export default function Terminals() {
@@ -9,8 +9,6 @@ export default function Terminals() {
   return (
     <>
       <PageHero
-        eyebrow={t.hero.eyebrow}
-        badge={<Badge state="design">{t.hero.badge}</Badge>}
         lines={t.hero.lines}
         sub={t.hero.sub}
         actions={<Button href={t.hero.primary.href}>{t.hero.primary.label}</Button>}
@@ -26,7 +24,7 @@ export default function Terminals() {
       <Intent />
       <section id="shape" className="section" aria-labelledby="shape-title">
         <div className="wrap form-grid">
-          <SectionHead id="shape-title" eyebrow={t.shape.eyebrow} title={t.shape.heading} sub={t.shape.body} />
+          <SectionHead id="shape-title" title={t.shape.heading} sub={t.shape.body} />
           <div className="form-card reveal" style={d(100)}>
             <RequestForm defaultInterest="terminal" />
           </div>
@@ -41,7 +39,7 @@ function Idea() {
   return (
     <section className="section section-tint" aria-labelledby="idea-title">
       <div className="wrap split split-visual">
-        <SectionHead id="idea-title" eyebrow={i.eyebrow} title={i.heading} sub={i.body} />
+        <SectionHead id="idea-title" title={i.heading} sub={i.body} />
         <div className="reveal" style={d(120)}>
           <Sketch />
         </div>
@@ -92,7 +90,6 @@ function Sketch({ compact }: { compact?: boolean }) {
           </p>
         </div>
       </div>
-      {!compact && <figcaption className="fineprint">{s.note}</figcaption>}
     </figure>
   )
 }
@@ -102,7 +99,7 @@ function Intent() {
   return (
     <section className="section" aria-labelledby="intent-title">
       <div className="wrap">
-        <SectionHead id="intent-title" eyebrow={i.eyebrow} title={i.heading} sub={i.body} />
+        <SectionHead id="intent-title" title={i.heading} sub={i.body} />
         <div className="qa-table reveal" style={d(100)}>
           <div className="qa-head" aria-hidden="true">
             <span>{i.colIntent}</span>

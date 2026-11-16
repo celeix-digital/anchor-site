@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { audiences, footer, nav } from '../content/shared'
+import { footer, nav } from '../content/shared'
 import { Link, useLocation } from '../router'
 import { LogoMark } from './Logo'
-import { Badge, Glyph } from './ui'
 
 export function Nav() {
   const ref = useRef<HTMLElement>(null)
@@ -68,6 +67,7 @@ export function Nav() {
           {nav.cta.label}
         </Link>
       </nav>
+      {open && <button type="button" className="nav-backdrop" aria-label="Close the menu" tabIndex={-1} onClick={() => setOpen(false)} />}
     </header>
   )
 }
@@ -76,18 +76,6 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="wrap">
-        <ul className="footer-status">
-          {audiences.map((a) => (
-            <li key={a.title}>
-              <Link href={a.href} className="footer-status-card">
-                <Badge state={a.state}>{a.label}</Badge>
-                <span className="footer-status-title">{a.title}</span>
-                <span className="footer-status-body">{a.body}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
         <div className="footer-main">
           <div className="footer-brand">
             <Link className="brand" href="/" aria-label={nav.footerHomeLabel}>
@@ -95,19 +83,6 @@ export function Footer() {
               <span className="brand-word">ANCHOR</span>
             </Link>
             <p className="footer-blurb">{footer.blurb}</p>
-            <Link className="footer-mark-link" href={footer.markLink.href}>
-              {footer.markLink.label}
-            </Link>
-            <ul className="footer-glyphs" aria-label="What the symbols in the product mean">
-              {footer.glyphs.map((g) => (
-                <li key={g.state}>
-                  <Glyph state={g.state} />
-                  <span>
-                    {g.label} <span className="footer-glyph-shape">{g.shape}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
           </div>
           {footer.columns.map((c) => (
             <nav key={c.title} className="footer-col" aria-label={c.title}>
@@ -122,12 +97,9 @@ export function Footer() {
             </nav>
           ))}
         </div>
-
         <div className="footer-base">
           <p>{footer.legal}</p>
-          <p>
-            {footer.datum} · <a href={footer.signIn.href}>{footer.signIn.label}</a> {footer.signIn.after}
-          </p>
+          <a href={footer.signIn.href}>{footer.signIn.label}</a>
         </div>
       </div>
     </footer>

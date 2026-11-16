@@ -64,20 +64,17 @@ export const zoneGroups = [
 
 export const services = {
   meta: {
-    title: 'Professional services by Celeix Digital — ANCHOR',
+    title: 'Professional services by Celeix Digital | ANCHOR',
     description:
       'Celeix Digital helps ports, terminals and operators understand their current coordination and plan modernization in phases. Consulting work, distinct from the ANCHOR product.',
   },
   hero: {
-    eyebrow: 'Services by Celeix Digital',
-    badge: 'Separate from the software',
     lines: ['Start with how the', 'operation really runs.'],
     sub: 'Celeix Digital helps ports, terminals and operators understand their current coordination and plan modernization in phases. This is consulting work, distinct from the ANCHOR product.',
     primary: { href: '#contact', label: 'Talk to us about your operation' },
     secondary: { href: '#zones', label: 'Walk the nine zones' },
   },
   work: {
-    eyebrow: 'What we do',
     heading: 'Four pieces of work. One plan you can measure.',
     body: 'Consulting engagements. You do not need to use the ANCHOR software to work with Celeix Digital.',
     colWork: 'Work',
@@ -106,7 +103,6 @@ export const services = {
     ],
   },
   journey: {
-    eyebrow: 'The vessel journey · Nine zones',
     heading: 'We walk the visit, zone by zone.',
     body: 'From the first notice offshore to trip closure, each zone has its own people, handoffs and records. We use these zones to structure discovery.',
     tag: 'Discovery framework',
@@ -114,11 +110,9 @@ export const services = {
     people: 'People involved',
     zoneOf: (n: number) => `Zone ${String(n).padStart(2, '0')} of 09`,
     keys: 'Use arrow keys on the chart to move between zones.',
-    note: 'Email and document workflows may group these stages differently, and not every call passes through every zone in this order. Shifting, for example, depends on the call.',
     quay: 'Quay',
   },
   path: {
-    eyebrow: 'From AS-IS to TO-BE',
     heading: 'Understand today before designing tomorrow.',
     steps: [
       { tag: 'AS-IS', title: 'Document the present', body: 'How work happens today, with the evidence behind it: messages, forms, calls and spreadsheets.' },
@@ -129,7 +123,6 @@ export const services = {
     note: 'What we aim for: fewer re-typed facts, clearer readiness, and handoffs everyone can see. These are goals for an engagement, not results we claim in advance.',
   },
   find: {
-    eyebrow: 'What we tend to find',
     heading: 'The same fact, typed in four places.',
     body: 'Common patterns, not promised outcomes. Every engagement starts from your operation.',
     items: [
@@ -140,7 +133,6 @@ export const services = {
     ],
   },
   people: {
-    eyebrow: 'Who we talk to',
     heading: 'The people each zone depends on.',
     groups: [
       'Port & harbor operations',
@@ -167,10 +159,8 @@ export const services = {
     stakeholder: 'Stakeholder',
     dot: 'Example touchpoint',
     none: 'Not highlighted in this example',
-    note: 'These are the people the port call depends on. They are part of the discovery work; they are not all users of the ANCHOR platform today. We plan coordination alongside existing systems, including terminal operating systems, not in place of them.',
   },
   contact: {
-    eyebrow: 'Talk to us about your operation',
     heading: 'Start with one conversation.',
     body: 'Tell us about your port or terminal, and the team follows up from your request.',
   },

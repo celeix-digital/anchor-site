@@ -1,12 +1,10 @@
 export const terminals = {
   meta: {
-    title: 'Terminals, in design — ANCHOR',
+    title: 'Terminals, in design | ANCHOR',
     description:
       'We are designing a shared view of each vessel visit for terminals and shipping agents, alongside the systems terminals already run. ANCHOR is live today for shipping agents only.',
   },
   hero: {
-    eyebrow: 'Terminals',
-    badge: 'In design · Not live',
     lines: ['A shared view of', 'the vessel visit.'],
     sub: 'We are designing a shared view of each vessel visit for terminals and shipping agents, alongside the systems terminals already run. ANCHOR is live today for shipping agents only.',
     primary: { href: '#shape', label: 'Help shape it' },
@@ -14,7 +12,6 @@ export const terminals = {
       'Terminal coordination is in design and not available yet. Everything on this page describes design intent; what is live today is for shipping agents.',
   },
   idea: {
-    eyebrow: 'The idea',
     heading: 'Many shipping agents. One visit. One record.',
     body: 'Today each shipping agent sends their numbers in their own thread. The direction we are exploring: shipping-agent updates feeding a shared view of the visit, with differences surfaced for a person to settle.',
     sketch: {
@@ -30,11 +27,10 @@ export const terminals = {
       ],
       sources: ['A · 06:30', 'C · 08:00'],
       settle: 'Both kept. A person settles it.',
-      note: 'Concept sketch for discussion, not a shipped interface or product screenshot.',
+      note: 'Concept sketch for discussion, not a product screenshot.',
     },
   },
   intent: {
-    eyebrow: 'Design intent · In design',
     heading: 'What we intend, and what we need to ask you.',
     body: 'Each intent comes with an open question. The answers come from terminals, not from us.',
     colIntent: 'Intent',
@@ -63,7 +59,6 @@ export const terminals = {
     ],
   },
   shape: {
-    eyebrow: 'Shape it with us',
     heading: 'Tell us how your terminal works.',
     body: 'This records your interest in shaping terminal coordination. There is nothing to sign up for yet.',
   },

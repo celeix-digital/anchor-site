@@ -2,12 +2,13 @@ import AnchorRail from './components/AnchorRail'
 import { Footer, Nav } from './components/Layout'
 import { Button, useReveal } from './components/ui'
 import { nav } from './content/shared'
-import { useInitialHash, useLocation, usePageMeta } from './router'
+import { useEffect } from 'react'
+import { redirect, useInitialHash, useLocation, usePageMeta } from './router'
 import Home from './pages/Home'
 import ShippingAgents from './pages/ShippingAgents'
 import Terminals from './pages/Terminals'
 import Services from './pages/Services'
-import Vision from './pages/Vision'
+import About from './pages/About'
 import { BookDemo, ThankYou } from './pages/BookDemo'
 
 const routes: Record<string, () => React.JSX.Element> = {
@@ -15,17 +16,16 @@ const routes: Record<string, () => React.JSX.Element> = {
   '/shipping-agents': ShippingAgents,
   '/terminal-agents': Terminals,
   '/services': Services,
-  '/vision': Vision,
+  '/about': About,
   '/book-demo': BookDemo,
   '/thank-you': ThankYou,
 }
 
 function NotFound() {
-  usePageMeta('Page not found — ANCHOR', 'This page does not exist.')
+  usePageMeta('Page not found | ANCHOR', 'This page does not exist.')
   return (
     <section className="section page-hero-solo" aria-labelledby="hero-title">
       <div className="wrap">
-        <p className="eyebrow">404</p>
         <h1 id="hero-title" className="display hero-title">
           Off the chart.
         </h1>
@@ -40,7 +40,11 @@ function NotFound() {
 
 export default function App() {
   const { path, search } = useLocation()
-  const Page = routes[path] ?? NotFound
+  // The Vision page is now About.
+  useEffect(() => {
+    if (path === '/vision') redirect('/about' + window.location.search + window.location.hash)
+  }, [path])
+  const Page = routes[path === '/vision' ? '/about' : path] ?? NotFound
   useReveal(path + search.toString())
   useInitialHash()
   return (
