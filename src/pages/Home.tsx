@@ -60,6 +60,7 @@ function HowItWorks() {
   const h = home.how
   const n = h.steps.length
   const [i, setI] = useState(0)
+  const [prev, setPrev] = useState(-1) // stays solid underneath while the next slide fades in
   const [held, setHeld] = useState(false) // hover or focus inside
   const [stopped, setStopped] = useState(false) // pause button
   const [seen, setSeen] = useState(false)
@@ -87,6 +88,8 @@ function HowItWorks() {
   const playing = seen && !held && !stopped && !reduce
   const go = (k: number, focus = false) => {
     const next = (k + n) % n
+    if (next === i) return
+    setPrev(i)
     setI(next)
     if (focus) tabs.current[next]?.focus()
   }
@@ -122,7 +125,7 @@ function HowItWorks() {
             <div id="show-panel" role="tabpanel" aria-labelledby={`show-tab-${i}`} className="show-panel">
               <div className="show-stage">
                 {h.steps.map((st, k) => (
-                  <Screen key={st.n} shot={st.shot} className={`show-slide${k === i ? ' is-on' : ''}`} inactive={k !== i} />
+                  <Screen key={st.n} shot={st.shot} className={`show-slide${k === i ? ' is-on' : k === prev ? ' is-prev' : ''}`} inactive={k !== i} />
                 ))}
               </div>
             </div>

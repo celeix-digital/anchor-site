@@ -1818,14 +1818,38 @@ textarea.field {
   position: relative;
   aspect-ratio: 1608 / 900;
 }
+/* The outgoing slide stays fully visible underneath; only the incoming one fades,
+   so the background never shows through mid-change. */
 .show-slide {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 0.45s ease;
+  z-index: 0;
+  box-shadow: none;
+}
+.show-slide.is-prev {
+  opacity: 1;
+  z-index: 1;
 }
 .show-slide.is-on {
   opacity: 1;
+  z-index: 2;
+  animation: slide-in 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.show-stage {
+  border-radius: 14px;
+  box-shadow:
+    0 2px 6px rgb(11 42 74 / 0.06),
+    0 32px 64px -32px rgb(11 42 74 / 0.38);
+}
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: scale(1.012);
+  }
+}
+.show-slide img {
+  transform: translateZ(0);
 }
 .show-slide img {
   height: 100%;
@@ -1839,7 +1863,7 @@ textarea.field {
   gap: 4px 16px;
   margin-top: 24px;
   min-height: 3.2em;
-  animation: show-in 0.35s ease both;
+  animation: show-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 .show-caption .h4 {
   margin: 0;
@@ -1856,7 +1880,7 @@ textarea.field {
 @keyframes show-in {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(6px);
   }
 }
 .show-controls {
@@ -1898,6 +1922,9 @@ textarea.field {
   background: var(--teal-ink);
   transform-origin: left center;
   transform: scaleX(0);
+}
+.show-fill {
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .show-dot.is-done .show-fill {
   transform: scaleX(1);
@@ -1946,7 +1973,9 @@ textarea.field {
 }
 @media (prefers-reduced-motion: reduce) {
   .show-slide,
-  .show-caption {
+  .show-slide.is-on,
+  .show-caption,
+  .show-fill {
     transition: none;
     animation: none;
   }
@@ -2269,4 +2298,9 @@ textarea.field {
 .cc-team .cc-head,
 .cc-team .glyph {
   color: #9ec3e4;
+}
+@media (max-width: 640px) {
+  .show-stage {
+    border-radius: 10px;
+  }
 }
