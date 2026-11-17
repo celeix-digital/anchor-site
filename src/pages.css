@@ -2304,3 +2304,100 @@ textarea.field {
     border-radius: 10px;
   }
 }
+
+/* ==========================================================================
+   Second review, 2026-11-16: highlight boxes on the slideshow, even bubbles.
+   ========================================================================== */
+.screen:not(.show-slide) {
+  position: relative;
+}
+/* A red box around the part of the screen each step is about. */
+.screen-mark {
+  position: absolute;
+  left: var(--l);
+  top: var(--t);
+  width: var(--w);
+  height: var(--h);
+  border: 3px solid #e5484d;
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 4px rgb(229 72 77 / 0.16),
+    0 6px 18px -6px rgb(229 72 77 / 0.45);
+  pointer-events: none;
+  opacity: 0;
+}
+.show-slide.is-prev .screen-mark {
+  opacity: 1;
+}
+.show-slide.is-on .screen-mark {
+  animation: mark-in 0.55s 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes mark-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 640px) {
+  .screen-mark {
+    left: var(--ml);
+    top: var(--mt);
+    width: var(--mw);
+    height: var(--mh);
+    border-width: 2.5px;
+    border-radius: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .show-slide.is-on .screen-mark {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Sender bubbles: one line each, all the same height, spread across one row. */
+.flow {
+  container-type: inline-size;
+}
+.flow .flow-parties {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+.flow .flow-parties li {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 10px;
+}
+@container (max-width: 470px) {
+  .flow .flow-parties li {
+    padding: 0 7px;
+    font-size: 0.6875rem;
+    min-height: 26px;
+  }
+}
+@media (max-width: 599px) {
+  .flow .flow-parties {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Services banner now closes the home page, after the demo panel. */
+.cta-section + .banner-section {
+  padding-top: 0;
+}
+main > .banner-section:last-child {
+  padding-bottom: clamp(56px, 8vw, 96px);
+}
+.cta-panel .lede {
+  max-width: 38rem;
+}

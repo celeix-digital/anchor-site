@@ -1,5 +1,4 @@
-import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
-import { services, zoneGroups, zones } from '../content/services'
+import { services } from '../content/services'
 import { usePageMeta } from '../router'
 import { Button, SectionHead, d } from '../components/ui'
 import { HeroChart, PageHero, RequestForm } from '../components/blocks'
@@ -25,10 +24,8 @@ export default function Services() {
         visual={<HeroChart kind="journey" label="Nine zones · One vessel visit" />}
       />
       <Work />
-      <Journey />
       <Path />
       <Find />
-      <People />
       <section id="contact" className="section" aria-labelledby="contact-title">
         <div className="wrap form-grid">
           <SectionHead id="contact-title" title={s.contact.heading} sub={s.contact.body} />
@@ -75,110 +72,6 @@ function Work() {
   )
 }
 
-// Height of each stop on the chart (0–100), tracing a vessel in and back out.
-const depth = [30, 43, 55, 64, 70, 70, 61, 47, 32]
-const xOf = (n: number) => ((n + 0.5) / 9) * 100
-
-function Journey() {
-  const j = services.journey
-  const [i, setI] = useState(0)
-  const tabs = useRef<(HTMLButtonElement | null)[]>([])
-  const go = (n: number, focus = false) => {
-    const next = (n + 9) % 9
-    setI(next)
-    if (focus) tabs.current[next]?.focus()
-  }
-  const onKey = (e: KeyboardEvent) => {
-    const map: Record<string, number> = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: 8 }
-    if (e.key in map) {
-      e.preventDefault()
-      go(map[e.key], true)
-    }
-  }
-  const z = zones[i]
-  const line = (to: number) => zones.slice(0, to + 1).map((_, n) => `${n ? 'L' : 'M'}${xOf(n) * 10} ${depth[n] * 3}`).join(' ')
-  const group = zoneGroups.find((g) => i >= g.from && i <= g.to)
-
-  return (
-    <section id="zones" className="section section-navy" aria-labelledby="zones-title">
-      <div className="wrap">
-        <SectionHead id="zones-title" title={j.heading} sub={j.body} onDark />
-        <p className="journey-tag reveal">
-          <span className="journey-tag-chip">{j.tag}</span>
-          <span>{j.tagNote}</span>
-        </p>
-        <div className="journey reveal" style={d(100)}>
-          <div className="journey-chart">
-            <div className="journey-groups" aria-hidden="true">
-              {zoneGroups.map((g) => (
-                <div key={g.label} style={{ width: `${((g.to - g.from + 1) / 9) * 100}%` }} className={group === g ? 'is-on' : ''}>
-                  {g.label}
-                </div>
-              ))}
-            </div>
-            <div className="journey-quay" aria-hidden="true">
-              <span>{j.quay}</span>
-            </div>
-            <svg className="journey-svg" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
-              <path d={line(8)} className="journey-path" vectorEffect="non-scaling-stroke" />
-              {i > 0 && <path d={line(i)} className="journey-path-on" vectorEffect="non-scaling-stroke" />}
-            </svg>
-            <div role="tablist" aria-label="Nine-zone vessel journey" className="journey-stops">
-              {zones.map((zz, n) => (
-                <button
-                  key={zz.t}
-                  ref={(el) => {
-                    tabs.current[n] = el
-                  }}
-                  role="tab"
-                  id={`zone-tab-${n}`}
-                  aria-selected={n === i}
-                  aria-controls="zone-panel"
-                  tabIndex={n === i ? 0 : -1}
-                  className={`journey-stop${n === i ? ' is-on' : ''}${n < i ? ' is-past' : ''}`}
-                  style={{ '--x': `${xOf(n)}%`, '--y': `${depth[n]}%` } as CSSProperties}
-                  onClick={() => go(n)}
-                  onKeyDown={onKey}
-                >
-                  <span className="journey-dot" aria-hidden="true" />
-                  <span className="journey-n">{pad(n + 1)}</span>
-                  <span className="journey-name">{zz.t}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div id="zone-panel" role="tabpanel" aria-labelledby={`zone-tab-${i}`} className="journey-panel" key={i}>
-            <div>
-              <p className="journey-of">
-                {j.zoneOf(i + 1)} · <span>{z.s}</span>
-              </p>
-              <h3 className="display journey-title">{z.t}</h3>
-              <p className="journey-desc">{z.d}</p>
-            </div>
-            <div>
-              <h4 className="journey-people-title">{j.people}</h4>
-              <ul className="journey-people">
-                {z.r.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ul>
-              <div className="journey-arrows">
-                <button type="button" className="btn btn-ghost-dark btn-sm" onClick={() => go(i - 1)} aria-label="Previous zone">
-                  ←
-                </button>
-                <button type="button" className="btn btn-ghost-dark btn-sm" onClick={() => go(i + 1)} aria-label="Next zone">
-                  →
-                </button>
-              </div>
-            </div>
-          </div>
-          <p className="journey-keys">{j.keys}</p>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function Path() {
   const p = services.path
   return (
@@ -214,43 +107,6 @@ function Find() {
             </li>
           ))}
         </ol>
-      </div>
-    </section>
-  )
-}
-
-function People() {
-  const p = services.people
-  return (
-    <section className="section" aria-labelledby="people-title">
-      <div className="wrap">
-        <SectionHead id="people-title" title={p.heading} sub={`${p.groups.join(' · ')}.`} />
-        <div className="matrix-wrap reveal" style={d(100)} tabIndex={0} role="region" aria-label={p.heading}>
-          <table className="matrix">
-            <caption>{p.caption}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{p.stakeholder}</th>
-                {zones.map((z, n) => (
-                  <th key={z.t} scope="col">
-                    <span className="matrix-n">{pad(n + 1)}</span>
-                    {z.t}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {p.rows.map((row) => (
-                <tr key={row}>
-                  <th scope="row">{row}</th>
-                  {zones.map((z) => (
-                    <td key={z.t}>{z.r.includes(row) ? <span className="mx-dot" role="img" aria-label={p.dot} /> : <span className="mx-none" role="img" aria-label={p.none} />}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
       </div>
     </section>
   )

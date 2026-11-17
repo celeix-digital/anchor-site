@@ -75,7 +75,35 @@ export function Button({ href, children, variant = 'primary', small }: { href: s
  * A real product screen, shown edge to edge with no window chrome. Phones get a
  * tighter crop of the same screen so the text stays readable.
  */
-export function Screen({ shot, eager, inactive, className = '', style }: { shot: Shot; eager?: boolean; inactive?: boolean; className?: string; style?: CSSProperties }) {
+type Box = readonly [x: number, y: number, w: number, h: number]
+const pct = (v: number, of: number) => `${(v / of) * 100}%`
+
+/** A product screen. `mark` draws a highlight box: `d` in desktop pixels, `m` in the phone crop (700×680). */
+export function Screen({
+  shot,
+  eager,
+  inactive,
+  className = '',
+  style,
+  mark,
+}: {
+  shot: Shot
+  eager?: boolean
+  inactive?: boolean
+  className?: string
+  style?: CSSProperties
+  mark?: { d: Box; m: Box }
+}) {
+  const box = mark && {
+    '--l': pct(mark.d[0], shot.width),
+    '--t': pct(mark.d[1], shot.height),
+    '--w': pct(mark.d[2], shot.width),
+    '--h': pct(mark.d[3], shot.height),
+    '--ml': pct(mark.m[0], 700),
+    '--mt': pct(mark.m[1], 680),
+    '--mw': pct(mark.m[2], 700),
+    '--mh': pct(mark.m[3], 680),
+  }
   return (
     <figure className={`screen ${className}`} style={style} aria-hidden={inactive || undefined}>
       <picture>
@@ -90,6 +118,7 @@ export function Screen({ shot, eager, inactive, className = '', style }: { shot:
           decoding="async"
         />
       </picture>
+      {box && <span className="screen-mark" aria-hidden="true" style={box as CSSProperties} />}
     </figure>
   )
 }

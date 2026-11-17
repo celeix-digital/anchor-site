@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { home } from '../content/home'
 import { shots } from '../content/shared'
 import { usePageMeta } from '../router'
@@ -13,8 +13,8 @@ export default function Home() {
       <HowItWorks />
       <Problem />
       <Audiences />
-      <Banner id="svc-title" {...home.services} />
       <CtaPanel id="home-cta" {...home.cta} />
+      <Banner id="svc-title" {...home.services} />
     </>
   )
 }
@@ -51,7 +51,7 @@ function Hero() {
 const STEP_MS = 3500
 
 /**
- * "Follow one email" as a slideshow: it moves on by itself, with the steps as
+ * The email life cycle as a slideshow: it moves on by itself, with the steps as
  * pointers under the screen. It pauses on hover or focus, when off screen, when
  * the visitor presses pause, and never auto-plays under reduced motion. Every
  * slide's image is in the page from the start, so switching never waits on a load.
@@ -125,7 +125,7 @@ function HowItWorks() {
             <div id="show-panel" role="tabpanel" aria-labelledby={`show-tab-${i}`} className="show-panel">
               <div className="show-stage">
                 {h.steps.map((st, k) => (
-                  <Screen key={st.n} shot={st.shot} className={`show-slide${k === i ? ' is-on' : k === prev ? ' is-prev' : ''}`} inactive={k !== i} />
+                  <Screen key={st.n} shot={st.shot} className={`show-slide${k === i ? ' is-on' : k === prev ? ' is-prev' : ''}`} inactive={k !== i} mark={st.mark} />
                 ))}
               </div>
             </div>
@@ -213,17 +213,32 @@ function Problem() {
 /** Six senders, one call, one shared inbox. Fictional messages from the live site. */
 function DayInbox() {
   const day = home.problem.day
+  // The lines start under each bubble, wherever the bubbles end up at this width.
+  const list = useRef<HTMLUListElement>(null)
+  const [xs, setXs] = useState([8, 25, 42, 58, 75, 92])
+  useLayoutEffect(() => {
+    const ul = list.current
+    if (!ul) return
+    const measure = () => {
+      const box = ul.getBoundingClientRect()
+      if (box.width) setXs([...ul.children].map((li) => { const r = li.getBoundingClientRect(); return ((r.left + r.width / 2 - box.left) / box.width) * 100 }))
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(ul)
+    return () => ro.disconnect()
+  }, [])
   return (
     <figure className="flow reveal" style={d(140)}>
       <p className="flow-label">{day.label}</p>
-      <ul className="flow-parties" aria-hidden="true">
+      <ul ref={list} className="flow-parties" aria-hidden="true">
         {day.messages.map((m) => (
           <li key={m.from}>{m.from}</li>
         ))}
       </ul>
       <svg className="flow-lines" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-        {[8, 25, 42, 58, 75, 92].map((x) => (
-          <path key={x} d={`M${x} 0 C ${x} 22, 50 18, 50 40`} vectorEffect="non-scaling-stroke" />
+        {xs.map((x, n) => (
+          <path key={n} d={`M${x.toFixed(2)} 0 C ${x.toFixed(2)} 22, 50 18, 50 40`} vectorEffect="non-scaling-stroke" />
         ))}
       </svg>
       <div className="flow-inbox">

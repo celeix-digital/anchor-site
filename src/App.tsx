@@ -9,6 +9,7 @@ import ShippingAgents from './pages/ShippingAgents'
 import Terminals from './pages/Terminals'
 import Services from './pages/Services'
 import About from './pages/About'
+import HowItWorks from './pages/HowItWorks'
 import { BookDemo, ThankYou } from './pages/BookDemo'
 
 const routes: Record<string, () => React.JSX.Element> = {
@@ -17,6 +18,7 @@ const routes: Record<string, () => React.JSX.Element> = {
   '/terminal-agents': Terminals,
   '/services': Services,
   '/about': About,
+  '/how-it-works': HowItWorks,
   '/book-demo': BookDemo,
   '/thank-you': ThankYou,
 }

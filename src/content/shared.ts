@@ -12,7 +12,7 @@ export const nav = {
   homeLabel: 'ANCHOR39 home',
   footerHomeLabel: 'ANCHOR home',
   links: [
-    { href: '/#how', label: 'How it works' },
+    { href: '/how-it-works', label: 'How it works' },
     { href: '/shipping-agents', label: 'Shipping agents' },
     { href: '/terminal-agents', label: 'Terminals' },
     { href: '/services', label: 'Services' },
@@ -39,7 +39,7 @@ export const shots = {
   ),
   classify: app(
     'app-classify',
-    'An email open in ANCHOR, tagged Action required, with the AI suggesting the vessel MV Coral Meridian and port call HT-26AUG001 and buttons to confirm or edit.',
+    'An email open in ANCHOR, tagged Action required, with ANCHOR suggesting the vessel MV Coral Meridian and port call HT-26AUG001 and buttons to confirm or edit.',
   ),
   vessel: app(
     'app-vessel',
@@ -51,7 +51,7 @@ export const shots = {
   ),
   thread: app(
     'app-thread',
-    'An email thread for MT Avalon Spirit, port call HT-26AUG002, with ETA, ETB and ETD above a reply the Houston desk sent.',
+    'An email thread for MT Avalon Spirit, port call HT-26AUG002, with ETA, ETB and ETD above a reply the Houston team sent.',
   ),
 } satisfies Record<string, Shot>
 
@@ -66,16 +66,11 @@ export const footer = {
       ],
     },
     {
-      title: 'Services',
-      links: [
-        { href: '/services', label: 'Services by Celeix Digital' },
-        { href: '/services#zones', label: 'The vessel journey' },
-      ],
-    },
-    {
       title: 'Company',
       links: [
         { href: '/about', label: 'About' },
+        { href: '/how-it-works', label: 'How it works' },
+        { href: '/services', label: 'Services' },
         { href: '/book-demo', label: 'Book a demo' },
       ],
     },

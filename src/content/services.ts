@@ -1,67 +1,3 @@
-export const zones = [
-  {
-    t: 'Ocean',
-    s: 'Pre-arrival & notices',
-    d: 'Arrival notices, ETAs and documents are exchanged before the vessel is near port, often in different formats.',
-    r: ['Shipping agents', 'Masters & vessel operators', 'Port & harbor operations'],
-  },
-  {
-    t: 'Anchorage',
-    s: 'Waiting & readiness',
-    d: 'The vessel waits while berth and terminal readiness are confirmed, usually by phone and email.',
-    r: ['Port & harbor operations', 'Terminals & berth planners', 'Shipping agents'],
-  },
-  {
-    t: 'Pilot boarding',
-    s: 'Inbound movement',
-    d: 'Boarding times are ordered and adjusted as readiness and conditions change.',
-    r: ['Pilots', 'Shipping agents', 'Masters & vessel operators'],
-  },
-  {
-    t: 'Tug assist',
-    s: 'Escorted transit',
-    d: 'Tug timing follows the same schedule as pilots, and drifts when that schedule moves.',
-    r: ['Tugs', 'Pilots', 'Port & harbor operations'],
-  },
-  {
-    t: 'Line handling',
-    s: 'Mooring',
-    d: 'Line handlers make the vessel fast; arrival and all-fast times are often recorded by hand.',
-    r: ['Line handlers', 'Terminals & berth planners', 'Shipping agents'],
-  },
-  {
-    t: 'Dock operations',
-    s: 'Alongside',
-    d: 'Cargo work, inspections and services run alongside, with readiness and volumes feeding later charges.',
-    r: ['Terminals & berth planners', 'Cargo interests', 'Shipping agents', 'Finance'],
-  },
-  {
-    t: 'Shifting',
-    s: 'Moves within port',
-    d: 'A berth change repeats much of the movement coordination, with the same parties re-notified.',
-    r: ['Port & harbor operations', 'Pilots', 'Tugs', 'Line handlers'],
-  },
-  {
-    t: 'Ready to depart',
-    s: 'Sailing preparation',
-    d: 'Clearances, final figures and outbound orders come together before the vessel can sail.',
-    r: ['Shipping agents', 'Masters & vessel operators', 'Terminals & berth planners'],
-  },
-  {
-    t: 'Channel exit & trip closure',
-    s: 'Outbound & close-out',
-    d: 'The vessel clears the channel, and times and services are reconciled for billing and records.',
-    r: ['Port & harbor operations', 'Finance', 'Shipping agents'],
-  },
-]
-
-export const zoneGroups = [
-  { label: 'Offshore', from: 0, to: 1 },
-  { label: 'Inbound approach', from: 2, to: 4 },
-  { label: 'Alongside', from: 5, to: 6 },
-  { label: 'Outbound', from: 7, to: 8 },
-]
-
 export const services = {
   meta: {
     title: 'Professional services by Celeix Digital | ANCHOR',
@@ -72,7 +8,7 @@ export const services = {
     lines: ['Start with how the', 'operation really runs.'],
     sub: 'Celeix Digital helps ports, terminals and operators understand their current coordination and plan modernization in phases. This is consulting work, distinct from the ANCHOR product.',
     primary: { href: '#contact', label: 'Talk to us about your operation' },
-    secondary: { href: '#zones', label: 'Walk the nine zones' },
+    secondary: { href: '/how-it-works', label: 'See how a port call works' },
   },
   work: {
     heading: 'Four pieces of work. One plan you can measure.',
@@ -102,16 +38,6 @@ export const services = {
       },
     ],
   },
-  journey: {
-    heading: 'We walk the visit, zone by zone.',
-    body: 'From the first notice offshore to trip closure, each zone has its own people, handoffs and records. We use these zones to structure discovery.',
-    tag: 'Discovery framework',
-    tagNote: 'A way to walk one vessel visit with the people involved. Not nine product modules; real calls vary by port.',
-    people: 'People involved',
-    zoneOf: (n: number) => `Zone ${String(n).padStart(2, '0')} of 09`,
-    keys: 'Use arrow keys on the chart to move between zones.',
-    quay: 'Quay',
-  },
   path: {
     heading: 'Understand today before designing tomorrow.',
     steps: [
@@ -131,34 +57,6 @@ export const services = {
       'Manual handoffs between separate parties',
       'Reconciliation that gets harder downstream',
     ],
-  },
-  people: {
-    heading: 'The people each zone depends on.',
-    groups: [
-      'Port & harbor operations',
-      'Shipping agents',
-      'Masters & vessel operators',
-      'Terminals & berth planners',
-      'Pilots, tugs & line handlers',
-      'Cargo interests',
-      'Finance',
-    ],
-    rows: [
-      'Shipping agents',
-      'Masters & vessel operators',
-      'Port & harbor operations',
-      'Terminals & berth planners',
-      'Pilots',
-      'Tugs',
-      'Line handlers',
-      'Cargo interests',
-      'Finance',
-    ],
-    caption:
-      'Example touchpoints for discovery, not an exhaustive responsibility map. Involvement varies by port. Scroll horizontally on smaller screens.',
-    stakeholder: 'Stakeholder',
-    dot: 'Example touchpoint',
-    none: 'Not highlighted in this example',
   },
   contact: {
     heading: 'Start with one conversation.',

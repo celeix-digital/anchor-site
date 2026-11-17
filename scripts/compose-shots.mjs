@@ -176,6 +176,48 @@ for (const s of screens) {
       }
       g.drawImage(src, 84, 0, 1356, 900, 252, 0, 1356, 900)
 
+      // 3. The ANCHOR39 mark (src/components/Logo.tsx) in place of the app's anchor icon.
+      const mark = (cx, cy, size, ring) => {
+        const k = size / 48
+        g.save(); g.translate(cx - size / 2, cy - size / 2); g.scale(k, k)
+        g.strokeStyle = ring; g.lineWidth = 1.9
+        g.beginPath(); g.arc(24, 24, 17.2, 0, Math.PI * 2); g.stroke()
+        g.fillStyle = ring
+        for (const [x, y, w, h] of [[22.8, 1.4, 2.4, 5.2], [22.8, 41.4, 2.4, 5.2], [1.4, 22.8, 5.2, 2.4], [41.4, 22.8, 5.2, 2.4]]) { g.beginPath(); g.roundRect(x, y, w, h, 0.6); g.fill() }
+        g.strokeStyle = '#38b0b8'; g.lineWidth = 2.1; g.lineJoin = 'round'
+        g.beginPath(); g.moveTo(24, 10.2); g.lineTo(36.3, 30.8); g.lineTo(11.7, 30.8); g.closePath(); g.stroke()
+        g.fillStyle = '#38b0b8'; g.beginPath(); g.arc(24, 24, 3.1, 0, Math.PI * 2); g.fill()
+        g.restore()
+      }
+      // Bounding box of the pixels in a region that match a test.
+      const bbox = (x0, y0, w, h, test) => {
+        const d = g.getImageData(x0, y0, w, h).data
+        let [l, t, r, b] = [w, h, -1, -1]
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          const i = (y * w + x) * 4
+          if (test(d[i], d[i + 1], d[i + 2])) { l = Math.min(l, x); r = Math.max(r, x); t = Math.min(t, y); b = Math.max(b, y) }
+        }
+        return r < 0 ? null : { x: x0 + l, y: y0 + t, w: r - l + 1, h: b - t + 1 }
+      }
+      // Sidebar tile: keep the rounded tile, white instead of blue, with the mark inside.
+      const tile = bbox(0, 8, 64, 80, (r, gg, b) => r + gg + b > 330)
+      if (tile) {
+        g.fillStyle = `rgb(${bgc[0]},${bgc[1]},${bgc[2]})`
+        g.fillRect(tile.x - 2, tile.y - 2, tile.w + 4, tile.h + 4)
+        g.fillStyle = '#ffffff'; g.beginPath(); g.roundRect(tile.x, tile.y, tile.w, tile.h, 7); g.fill()
+        mark(tile.x + tile.w / 2, tile.y + tile.h / 2, Math.min(tile.w, tile.h) - 4, '#0b2a4a')
+      }
+      // Email signature in the reply screen: blue anchor glyph before "A.N.C.H.O.R".
+      if (s.name === 'app-reply') {
+        const sig = bbox(840, 515, 70, 65, (r, gg, b) => b > 180 && b - r > 90)
+        if (sig) {
+          const p = g.getImageData(sig.x - 4, sig.y + sig.h / 2, 1, 1).data
+          g.fillStyle = `rgb(${p[0]},${p[1]},${p[2]})`
+          g.fillRect(sig.x - 1, sig.y - 1, sig.w + 2, sig.h + 2)
+          mark(sig.x + sig.w / 2, sig.y + sig.h / 2, Math.max(sig.w, sig.h) + 2, '#0b2a4a')
+        }
+      }
+
       const crop = (x, y, w, h) => {
         const k = document.createElement('canvas'); k.width = w; k.height = h
         k.getContext('2d').drawImage(cv, x, y, w, h, 0, 0, w, h)

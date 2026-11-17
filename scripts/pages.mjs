@@ -4,7 +4,7 @@ import { chromium } from 'playwright'
 import { mkdirSync } from 'node:fs'
 const out = process.argv[2] || 'shots/pages'
 const base = process.argv[3] || 'http://localhost:5199'
-const routes = (process.argv[4] || '/,/shipping-agents,/terminal-agents,/services,/about,/book-demo,/thank-you').split(',')
+const routes = (process.argv[4] || '/,/how-it-works,/shipping-agents,/terminal-agents,/services,/about,/book-demo,/thank-you').split(',')
 const only = process.argv[5]
 mkdirSync(out, { recursive: true })
 const b = await chromium.launch()
