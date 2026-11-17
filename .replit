@@ -1,22 +1,20 @@
-# Replit setup for the anchor39.com marketing site.
-# The site builds to plain files in dist/, so it ships as a Static deployment.
-modules = ["nodejs-20"]
-
-# "Run" in the workspace starts the dev server for previewing changes.
-run = "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
-
-[[ports]]
-localPort = 5173
-externalPort = 80
+modules = ["nodejs-24"]
 
 [deployment]
-deploymentTarget = "static"
-build = ["sh", "-c", "npm ci && npm run build"]
-publicDir = "dist"
+router = "application"
+deploymentTarget = "autoscale"
 
-# Every page address (/about, /how-it-works, ...) is served by index.html;
-# the site's own router then shows the right page. Real files such as
-# /product/*.webp and /assets/* are served as they are.
-[[deployment.rewrites]]
-from = "/*"
-to = "/index.html"
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+runButton = "Project"
+
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
