@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ANCHOR39"
+description = "The ANCHOR39 website introduces its shared workspace for shipping and terminal agents, explains services and workflows, and lets visitors prepare a demo request."
+version = "1.0.0"
+id = "artifacts/anchor39"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19347
+
+[services.development]
+run = "pnpm --filter @workspace/anchor39 run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/anchor39", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/anchor39/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19347"
+BASE_PATH = "/"

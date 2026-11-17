@@ -1,0 +1,1 @@
+- [Browser testing on Nix](browser-testing.md) — downloaded Playwright Chromium may lack shared libraries; prefer the Nix-managed browser.

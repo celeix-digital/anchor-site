@@ -1,15 +1,17 @@
-# [Project name]
+# ANCHOR39
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+The ANCHOR39 marketing website presents its maritime coordination workspace for shipping and terminal agents.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- Start the managed workflow `artifacts/anchor39: web` to run the website.
+- `pnpm --filter @workspace/anchor39 run typecheck` — check the website.
+- `pnpm --filter @workspace/anchor39 test` — browser checks for routes, assets, fonts, demo-request validation, email handoff, and mobile navigation (start the website workflow first).
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- The website requires no secrets or database. The API and database packages are unused workspace scaffolding.
 
 ## Stack
 
@@ -22,15 +24,18 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/anchor39/` — the migrated React + Vite website, with its original pages, styles, local fonts, and public assets.
+- `.migration-backup/` — the unmodified imported source and original documentation.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Preserve the existing frontend-only behavior; do not introduce a backend merely for the migration.
+- The demo-request form prepares a message in the visitor's email client; it does not send or save requests on a server.
+- Keep the original anchor39.com canonical and social URLs: migration alone does not change the site's public domain.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Eight page routes cover the homepage, shipping agents, terminal agents, services, about, how it works, demo requests, and request confirmation. The old `/vision` URL redirects to `/about`.
 
 ## User preferences
 
