@@ -2043,6 +2043,27 @@ textarea.field {
 .feature-text {
   padding: 0;
 }
+/* The rows have no card behind them, so only the screen lifts on hover. */
+.feature.is-in:hover {
+  transform: none;
+  box-shadow: none;
+}
+.feature-screen {
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.feature:hover .feature-screen {
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 10px rgb(11 42 74 / 0.08),
+    0 40px 72px -32px rgb(11 42 74 / 0.45);
+}
+@media (prefers-reduced-motion: reduce) {
+  .feature:hover .feature-screen {
+    transform: none;
+  }
+}
 
 /* ---------- Light banner (services), same width as the closing panel ---------- */
 .banner-section {
