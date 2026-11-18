@@ -65,3 +65,20 @@ test('mobile menu navigates and closes without horizontal overflow', async ({ pa
   await expect(toggle).toHaveAttribute('aria-expanded', 'false')
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 })
+
+test('shipping-agent feature screenshots have clear, responsive inner padding', async ({ page }) => {
+  await page.goto('/shipping-agents')
+  const screenshots = page.locator('.feature-screen')
+  await expect(screenshots).toHaveCount(4)
+  await screenshots.first().scrollIntoViewIfNeeded()
+  await expect(screenshots.first().locator('img')).toBeVisible()
+  const desktopPadding = await screenshots.first().evaluate((element) => getComputedStyle(element).paddingTop)
+  expect(Number.parseFloat(desktopPadding)).toBeGreaterThanOrEqual(12)
+  for (const image of await screenshots.locator('img').all()) {
+    await expect(image).toHaveAttribute('src')
+  }
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.reload()
+  const mobilePadding = await page.locator('.feature-screen').first().evaluate((element) => getComputedStyle(element).paddingTop)
+  expect(Number.parseFloat(mobilePadding)).toBeGreaterThanOrEqual(12)
+})
