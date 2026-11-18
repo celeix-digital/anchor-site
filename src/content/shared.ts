@@ -3,9 +3,9 @@
 
 export type Shot = { src: string; mobile?: string; width: number; height: number; alt: string }
 
-// TODO: confirm before launch. The live site saves requests to its own database;
-// this static site hands the request to the visitor's email app instead.
-export const CONTACT_EMAIL = 'hello@anchor39.com'
+// Where demo and services requests go. The site is static, so the form opens the
+// visitor's email app with the request filled in, addressed here.
+export const CONTACT_EMAIL = 'anchor39@celeix.digital'
 
 export const nav = {
   skip: 'Skip to content',
