@@ -67,6 +67,7 @@ export const footer = {
     },
     {
       title: 'Company',
+      wide: true,
       links: [
         { href: '/about', label: 'About' },
         { href: '/how-it-works', label: 'How it works' },
@@ -75,6 +76,5 @@ export const footer = {
       ],
     },
   ],
-  legal: '© 2026 ANCHOR',
-  signIn: { href: 'https://app.anchor39.com', label: 'Sign in at app.anchor39.com' },
+  legal: '© 2026 ANCHOR · Services delivered by Celeix Digital, separate from the software',
 }

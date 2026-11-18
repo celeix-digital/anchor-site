@@ -21,7 +21,7 @@ export default function Services() {
             </Button>
           </>
         }
-        visual={<HeroChart kind="journey" label="Nine zones · One vessel visit" />}
+        visual={<HeroChart kind="plan" label="Today first · Then a phased plan" />}
       />
       <Work />
       <Path />
