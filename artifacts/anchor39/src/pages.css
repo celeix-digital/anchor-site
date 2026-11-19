@@ -1644,6 +1644,16 @@ textarea.field {
   margin: 0;
   padding: 0;
 }
+.footer-col-wide {
+  grid-column: span 2;
+}
+.footer-col-wide ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  column-gap: 32px;
+}
 .footer-col a {
   display: inline-flex;
   align-items: center;
@@ -1679,6 +1689,12 @@ textarea.field {
   }
   .footer-brand {
     grid-column: 1 / -1;
+  }
+  .footer-col-wide {
+    grid-column: auto;
+  }
+  .footer-col-wide ul {
+    display: block;
   }
 }
 
@@ -1746,6 +1762,16 @@ textarea.field {
 .hc-dot {
   fill: var(--slate);
 }
+.hc-step {
+  fill: rgb(56 176 184 / 0.08);
+  stroke: var(--teal);
+  stroke-width: 1.6;
+  stroke-dasharray: 5 5;
+}
+.hc-step-on {
+  fill: rgb(56 176 184 / 0.28);
+  stroke-dasharray: none;
+}
 .hc-text {
   fill: var(--foam);
   font: 800 15px var(--font-display);
@@ -1753,6 +1779,10 @@ textarea.field {
 }
 .hc-text-sm {
   font-size: 10px;
+}
+.hc-text-md {
+  font-size: 13px;
+  letter-spacing: 0.04em;
 }
 .hc-node-on + .hc-text {
   fill: var(--navy);
@@ -2013,15 +2043,26 @@ textarea.field {
 .feature-text {
   padding: 0;
 }
+/* The rows have no card behind them, so only the screen lifts on hover. */
+.feature.is-in:hover {
+  transform: none;
+  box-shadow: none;
+}
 .feature-screen {
-  padding: clamp(12px, 1.5vw, 18px);
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.feature-screen picture {
-  display: block;
+.feature:hover .feature-screen {
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 10px rgb(11 42 74 / 0.08),
+    0 40px 72px -32px rgb(11 42 74 / 0.45);
 }
-.feature-screen img {
-  display: block;
-  border-radius: 7px;
+@media (prefers-reduced-motion: reduce) {
+  .feature:hover .feature-screen {
+    transform: none;
+  }
 }
 
 /* ---------- Light banner (services), same width as the closing panel ---------- */

@@ -85,7 +85,7 @@ export function Footer() {
             <p className="footer-blurb">{footer.blurb}</p>
           </div>
           {footer.columns.map((c) => (
-            <nav key={c.title} className="footer-col" aria-label={c.title}>
+            <nav key={c.title} className={`footer-col${'wide' in c && c.wide ? ' footer-col-wide' : ''}`} aria-label={c.title}>
               <h2 className="footer-col-title">{c.title}</h2>
               <ul>
                 {c.links.map((l) => (
@@ -99,7 +99,6 @@ export function Footer() {
         </div>
         <div className="footer-base">
           <p>{footer.legal}</p>
-          <a href={footer.signIn.href}>{footer.signIn.label}</a>
         </div>
       </div>
     </footer>

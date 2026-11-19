@@ -182,14 +182,38 @@ export function RequestForm({ defaultInterest = 'demo' }: { defaultInterest?: In
 }
 
 /** Decorative navy chart panel for inner-page heroes. */
-export function HeroChart({ kind, label }: { kind: 'visit' | 'journey'; label: string }) {
+// The consulting path on the Services page: today first, then each step builds on it.
+const planSteps = ['AS-IS', 'GAPS', 'TO-BE', 'PHASES']
+
+export function HeroChart({ kind, label }: { kind: 'visit' | 'journey' | 'plan'; label: string }) {
   const depth = [30, 43, 55, 64, 70, 70, 61, 47, 32]
   const pts = depth.map((y, n) => [40 + n * 40, 60 + y * 3.2] as const)
   return (
     <div className="datum-visual hero-chart" aria-hidden="true">
       <div className="datum-grid" />
       <svg className="hero-chart-svg" viewBox="0 0 400 360">
-        {kind === 'visit' ? (
+        {kind === 'plan' ? (
+          <>
+            <rect x="24" y="296" width="352" height="10" rx="3" className="hc-quay" />
+            <path d="M60 236 L148 196 L236 156 L324 116" className="hc-route" />
+            {planSteps.map((t, n) => {
+              const x = 24 + n * 88
+              const top = 236 - n * 40
+              return (
+                <g key={t}>
+                  <rect x={x + 6} y={top} width="76" height={296 - top} rx="4" className={n === 0 ? 'hc-step hc-step-on' : 'hc-step'} />
+                  <circle cx={x + 44} cy={top - 28} r="13" className={n === 0 ? 'hc-node hc-node-on' : 'hc-node'} />
+                  <text x={x + 44} y={top - 24} className="hc-text hc-text-sm">
+                    {String(n + 1).padStart(2, '0')}
+                  </text>
+                  <text x={x + 44} y={top + 26} className="hc-text hc-text-md">
+                    {t}
+                  </text>
+                </g>
+              )
+            })}
+          </>
+        ) : kind === 'visit' ? (
           <>
             <rect x="40" y="262" width="320" height="34" rx="4" className="hc-quay" />
             <path d="M92 214 H308 L288 252 H112 Z" className="hc-ship" />
