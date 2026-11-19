@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { demo, thanks, type Interest } from '../content/demo'
-import { CONTACT_EMAIL } from '../content/shared'
+import { BOOKING_URL, CONTACT_EMAIL } from '../content/shared'
 import { useLocation, usePageMeta } from '../router'
 import { Button, Glyph, d } from '../components/ui'
-import { RequestForm } from '../components/blocks'
 
 const interests: Interest[] = ['demo', 'services', 'terminal', 'webinar']
 
@@ -27,10 +26,19 @@ export function BookDemo() {
           </p>
         </div>
       </section>
-      <section className="section section-tight" aria-label="Request form">
+      <section className="section section-tight" aria-label={demo.calendar.title}>
         <div className="wrap demo-grid">
-          <div className="form-card reveal">
-            <RequestForm key={interest} defaultInterest={interest} />
+          <div className="booking reveal">
+            <div className="booking-card">
+              <iframe className="booking-frame" src={`${BOOKING_URL}?gv=true`} title={demo.calendar.title} />
+            </div>
+            <p className="booking-fallback">
+              {demo.calendar.fallback}{' '}
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
+                {demo.calendar.open}
+              </a>
+              .
+            </p>
           </div>
           <aside className="demo-aside reveal" style={d(100)}>
             <div className="demo-block">

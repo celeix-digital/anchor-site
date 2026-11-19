@@ -38,7 +38,7 @@ export const form = {
 export const demo = {
   meta: {
     title: 'Book a demo | ANCHOR',
-    description: 'Bring us one port call. Tell us about your desk and the team follows up from your request.',
+    description: 'Pick a time for a 25-minute call with the ANCHOR team. Bring us one port call.',
   },
   hero: {
     heading: {
@@ -47,17 +47,21 @@ export const demo = {
       webinar: 'Tell us you’d like a seat.',
     },
     sub: {
-      default: 'Short form, honest next step. Your request goes to the team by email and they follow up from it.',
-      webinar:
-        'Webinar registration isn’t open on this site. Leave your details to record interest, and we’ll follow up when registration is live.',
+      default: 'Pick a time that suits you for a 25-minute call with the team. Google Calendar sends you the invite and the meeting link.',
+      webinar: 'Webinar registration isn’t open yet. Book a short call and we’ll let you know when it is.',
     },
   },
+  calendar: {
+    title: 'Pick a time for a 25-minute call',
+    fallback: 'Calendar not loading?',
+    open: 'Open it in a new tab',
+  },
   after: {
-    title: 'After you press continue',
+    title: 'After you pick a time',
     steps: [
-      { t: 'Drafted', d: 'Your email app opens with the request filled in.', done: true },
-      { t: 'Sent by you', d: 'Nothing leaves until you press send.', done: true },
-      { t: 'Read by the team', d: 'Someone reads the request and follows up from it. No set response time.', done: false },
+      { t: 'Pick a time', d: 'Choose a slot that works for you and add your details.', done: true },
+      { t: 'Get the invite', d: 'Google Calendar emails you the invite and the meeting link.', done: true },
+      { t: 'Meet the team', d: '25 minutes, walking through one of your port calls.', done: false },
     ],
   },
   covers: {

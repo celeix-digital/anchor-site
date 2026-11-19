@@ -7,6 +7,10 @@ export type Shot = { src: string; mobile?: string; width: number; height: number
 // visitor's email app with the request filled in, addressed here.
 export const CONTACT_EMAIL = 'anchor39@celeix.digital'
 
+// Google Calendar booking page for demo calls. `?gv=true` is Google's embeddable view.
+export const BOOKING_URL =
+  'https://calendar.google.com/calendar/appointments/schedules/AcZssZ121kSbGKgb64G3EPaD-h23z63N3TQOGi2hZaV8WhNDLAHsBM-Dz6iKoiAzBluU72Wdfk2YP3pQ'
+
 export const nav = {
   skip: 'Skip to content',
   homeLabel: 'ANCHOR39 home',
