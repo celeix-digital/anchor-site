@@ -1,0 +1,18 @@
+{
+  "framework": "vite",
+  "buildCommand": "PORT=5173 BASE_PATH=/ pnpm run build",
+  "outputDirectory": "dist/public",
+  "rewrites": [
+    {
+      "source": "/((?!assets/|product/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/vision",
+      "destination": "/about",
+      "permanent": true
+    }
+  ]
+}
